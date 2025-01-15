@@ -1,4 +1,4 @@
-import { createTheme, ThemeProvider } from '@mui/material';
+import { createTheme, CssBaseline, ThemeProvider } from '@mui/material';
 import AppRoutes from './routes';
 
 const theme = createTheme({
@@ -23,6 +23,10 @@ const theme = createTheme({
     body1: {
       fontSize: '1rem',
     },
+    body2: {
+      fontSize: '1rem',
+      fontWeight: 600,
+    },
     caption: {
       fontSize: '0.875rem',
       color: '#888',
@@ -34,6 +38,7 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <AppRoutes />
+      <CssBaseline />
     </ThemeProvider>
   );
 }
