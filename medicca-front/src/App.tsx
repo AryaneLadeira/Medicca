@@ -1,5 +1,6 @@
 import { createTheme, CssBaseline, ThemeProvider } from '@mui/material';
 import AppRoutes from './routes';
+import './style.scss';
 
 const theme = createTheme({
   palette: {

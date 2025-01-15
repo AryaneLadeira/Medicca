@@ -13,7 +13,7 @@ export default function Login() {
         <Grid2 container spacing={0}>
           <Grid2 size={{ xs: 0, md: 7 }}>
             <Box className="login-image-container">
-              <img src={LoginImage} alt="Imagem ilustrando a tela inicial" />
+              <img src={LoginImage} alt="Imagem ilustrando a tela inicial" className='initial-image'/>
             </Box>
           </Grid2>
 
