@@ -1,0 +1,19 @@
+.logo-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  user-select: none;
+  gap: 10px;
+}
+
+.logo {
+  width: 30px;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.logo-text {
+    color: black;
+}
