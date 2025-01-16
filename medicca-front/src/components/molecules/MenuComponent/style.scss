@@ -1,0 +1,26 @@
+.sidebar-list {
+  flex: 1;
+  padding: 16px 0;
+  background-color: #f4f4f4;
+}
+
+.sidebar-list-item {
+  padding: 0;
+}
+
+.sidebar-list-button {
+  padding: 8px 16px;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.sidebar-list-icon {
+  min-width: 40px;
+  color: #1976d2;
+}
+
+.sidebar-list-text {
+  color: #000;
+  font-weight: 500;
+}

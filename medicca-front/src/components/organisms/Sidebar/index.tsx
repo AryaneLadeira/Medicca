@@ -1,20 +1,9 @@
-import CloseIcon from '@mui/icons-material/Close';
-import HomeIcon from '@mui/icons-material/Home';
-import MenuIcon from '@mui/icons-material/Menu';
-import {
-  Box,
-  Drawer,
-  IconButton,
-  List,
-  ListItem,
-  ListItemButton,
-  ListItemIcon,
-  ListItemText,
-  Typography,
-  useMediaQuery,
-} from '@mui/material';
+import { Drawer, useMediaQuery } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { useState } from 'react';
+import SidebarHeader from '../../atoms/SidebarHeader';
+import MenuComponent from '../../molecules/MenuComponent';
+import MobileTopBar from '../../molecules/MobileTopBar';
 import './style.scss';
 
 function Sidebar() {
@@ -25,15 +14,15 @@ function Sidebar() {
   const toggleDrawer = () => {
     setIsOpen(!isOpen);
   };
-
-  const menuItems = [{ text: 'Home', icon: <HomeIcon />, path: '/' }];
+  const user = {
+    name: 'John Doe',
+    avatar: 'https://www.w3schools.com/howto/img_avatar.png',
+  };
 
   return (
     <>
-      {isSmallScreen && (
-        <IconButton onClick={toggleDrawer} className="menu-icon-button">
-          <MenuIcon />
-        </IconButton>
+      {isSmallScreen && !isOpen && (
+        <MobileTopBar onMenuClick={toggleDrawer} avatar={user.avatar} />
       )}
 
       <Drawer
@@ -43,38 +32,9 @@ function Sidebar() {
         variant={isSmallScreen ? 'temporary' : 'permanent'}
         className={isSmallScreen ? 'sidebar-drawer-mobile' : 'sidebar-drawer'}
       >
-        <Box className="sidebar-container">
-          {isSmallScreen && (
-            <Box className="sidebar-header">
-              <Typography variant="h6">Menu</Typography>
-              <IconButton onClick={toggleDrawer} className="close-icon-button">
-                <CloseIcon />
-              </IconButton>
-            </Box>
-          )}
+        {isSmallScreen && isOpen && <SidebarHeader onClose={toggleDrawer} />}
 
-          <Box className="sidebar-list">
-            <List>
-              {menuItems.map((item) => (
-                <ListItem
-                  disablePadding
-                  key={item.text}
-                  className="sidebar-list-item"
-                >
-                  <ListItemButton
-                    onClick={() => (window.location.href = item.path)}
-                    className="sidebar-list-button"
-                  >
-                    <ListItemIcon className="sidebar-list-icon">
-                      {item.icon}
-                    </ListItemIcon>
-                    <ListItemText primary={item.text} />
-                  </ListItemButton>
-                </ListItem>
-              ))}
-            </List>
-          </Box>
-        </Box>
+        <MenuComponent />
       </Drawer>
     </>
   );
