@@ -45,7 +45,6 @@ function PatientSignupForm() {
           inputProps={{ maxLength: 14 }}
         />
 
-        {/* E-mail */}
         <TextField
           label="E-mail"
           name="email"
