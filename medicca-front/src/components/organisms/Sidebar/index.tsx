@@ -1,8 +1,6 @@
 import CloseIcon from '@mui/icons-material/Close';
 import HomeIcon from '@mui/icons-material/Home';
-import LogoutIcon from '@mui/icons-material/Logout';
 import MenuIcon from '@mui/icons-material/Menu';
-import PersonIcon from '@mui/icons-material/Person';
 import {
   Box,
   Drawer,
@@ -28,9 +26,7 @@ function Sidebar() {
     setIsOpen(!isOpen);
   };
 
-  const menuItems = [
-    { text: 'Home', icon: <HomeIcon />, path: '/' },
-  ];
+  const menuItems = [{ text: 'Home', icon: <HomeIcon />, path: '/' }];
 
   return (
     <>
