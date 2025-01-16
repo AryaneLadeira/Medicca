@@ -8,7 +8,7 @@ interface FormSliderProps {
   SecondObject: React.ReactNode;
 }
 
-export default function SlideAnimationSlider({
+function SlideAnimationSlider({
   booleanTest,
   containerRef,
   FirstObject,
@@ -16,7 +16,7 @@ export default function SlideAnimationSlider({
 }: FormSliderProps) {
   return (
     <>
-      <Box>
+      <Box className="slide-form-container">
         <Slide
           in={booleanTest}
           direction="left"
@@ -24,8 +24,8 @@ export default function SlideAnimationSlider({
           mountOnEnter
           unmountOnExit
         >
-          <Box sx={{ position: 'absolute', width: '100%', height: '100%' }}>
-            {FirstObject}
+          <Box sx={{ width: '100%', height: '100%' }}>
+            {booleanTest ? FirstObject : ''}
           </Box>
         </Slide>
 
@@ -36,11 +36,13 @@ export default function SlideAnimationSlider({
           mountOnEnter
           unmountOnExit
         >
-          <Box sx={{ position: 'absolute', width: '100%', height: '100%' }}>
-            {SecondObject}
+          <Box sx={{ width: '100%', height: '100%' }}>
+            {!booleanTest ? SecondObject : ''}
           </Box>
         </Slide>
       </Box>
     </>
   );
 }
+
+export default SlideAnimationSlider;

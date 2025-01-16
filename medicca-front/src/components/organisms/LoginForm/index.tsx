@@ -17,7 +17,7 @@ function LoginForm() {
           margin="normal"
           type="email"
         />
-        <PasswordField label="Senha" />
+        <PasswordField label="Senha" margin="normal" />
         <ForgotPasswordLink />
         <LoginButton />
         <GoogleButton />

@@ -12,13 +12,13 @@
 
   @media (max-width: 600px) {
     margin: 0;
-    height: 100vh;
+    min-height: 100vh;
+    height: auto;
   }
 }
 
 .signup {
   background-image: linear-gradient(#f8f5fd 30%, #dacbfe 70%);
-  min-height: 100vh;
   display: flex;
   align-items: center;
 }
@@ -27,6 +27,5 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  overflow: hidden;
-  position: relative;
+  overflow-x: hidden;
 }

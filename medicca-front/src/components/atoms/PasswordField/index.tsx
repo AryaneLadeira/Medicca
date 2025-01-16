@@ -4,9 +4,10 @@ import { useState } from 'react';
 
 interface PasswordFieldProps {
   label: string;
+  margin: 'normal' | 'none';
 }
 
-function PasswordField({ label }: PasswordFieldProps) {
+function PasswordField({ label, margin }: PasswordFieldProps) {
   const [showPassword, setShowPassword] = useState(false);
 
   const handleClickShowPassword = () => setShowPassword(!showPassword);
@@ -18,7 +19,7 @@ function PasswordField({ label }: PasswordFieldProps) {
       variant="outlined"
       type={showPassword ? 'text' : 'password'}
       fullWidth
-      margin="normal"
+      margin={margin}
       slotProps={{
         input: {
           endAdornment: (
