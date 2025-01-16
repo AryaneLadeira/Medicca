@@ -11,7 +11,7 @@ interface SlideFormProps {
   setIsPatient: (value: boolean) => void;
 }
 
-export default function SlideForm({ isPatient, setIsPatient }: SlideFormProps) {
+function SlideForm({ isPatient, setIsPatient }: SlideFormProps) {
   const containerRef = useRef(null);
 
   return (
@@ -26,3 +26,5 @@ export default function SlideForm({ isPatient, setIsPatient }: SlideFormProps) {
     </Box>
   );
 }
+
+export default SlideForm;

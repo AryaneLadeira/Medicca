@@ -7,7 +7,7 @@ interface FormHeaderProps {
   subtitle: string;
 }
 
-export default function FormHeader({ title, subtitle }: FormHeaderProps) {
+function FormHeader({ title, subtitle }: FormHeaderProps) {
   return (
     <Box className="login-header">
       <img src={Logo} className="login-logo" alt="Logo Medicca" />
@@ -18,3 +18,5 @@ export default function FormHeader({ title, subtitle }: FormHeaderProps) {
     </Box>
   );
 }
+
+export default FormHeader;

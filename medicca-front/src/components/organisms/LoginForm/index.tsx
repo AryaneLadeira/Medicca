@@ -5,10 +5,10 @@ import LoginButton from '../../atoms/LoginButton';
 import PasswordField from '../../atoms/PasswordField';
 import './style.scss';
 
-export default function LoginForm() {
+function LoginForm() {
   return (
     <Box className="login-form-container">
-      <form className="login-form" style={{ width: '80%', maxWidth: 400 }}>
+      <form className="login-form">
         <TextField
           label="Email"
           required
@@ -25,3 +25,5 @@ export default function LoginForm() {
     </Box>
   );
 }
+
+export default LoginForm;

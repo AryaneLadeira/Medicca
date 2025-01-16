@@ -5,7 +5,7 @@ import SlideForm from '../../components/organisms/SlideForm';
 import './style.scss';
 import SignupImageSlider from '../../components/molecules/SignupImageSlider';
 
-export default function Signup() {
+function Signup() {
   const [isPatient, setIsPatient] = useState(true);
 
   return (
@@ -30,3 +30,5 @@ export default function Signup() {
     </Box>
   );
 }
+
+export default Signup;

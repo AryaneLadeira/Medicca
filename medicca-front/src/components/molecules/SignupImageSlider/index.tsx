@@ -1,18 +1,16 @@
+import { Box } from '@mui/material';
 import { useRef } from 'react';
 import DoctorImage from '../../../assets/images/doctor-signup.png';
 import PatientImage from '../../../assets/images/patient-signup.png';
 import FloatingAnimatedImage from '../../atoms/FloatingAnimatedImage';
 import SlideAnimationSlider from '../SlideAnimationSlider';
-import { Box } from '@mui/material';
 import './style.scss';
 
 interface SignupImageSliderProps {
   isPatient: boolean;
 }
 
-export default function SignupImageSlider({
-  isPatient,
-}: SignupImageSliderProps) {
+function SignupImageSlider({ isPatient }: SignupImageSliderProps) {
   const containerImageRef = useRef(null);
   return (
     <Box className="slide-image-container">
@@ -35,3 +33,5 @@ export default function SignupImageSlider({
     </Box>
   );
 }
+
+export default SignupImageSlider;

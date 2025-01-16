@@ -6,10 +6,7 @@ interface FormButtonsProps {
   setIsPatient: (value: boolean) => void;
 }
 
-export default function SlideFormButtons({
-  isPatient,
-  setIsPatient,
-}: FormButtonsProps) {
+function SlideFormButtons({ isPatient, setIsPatient }: FormButtonsProps) {
   return (
     <Box className="toggle-buttons">
       <Button
@@ -27,3 +24,5 @@ export default function SlideFormButtons({
     </Box>
   );
 }
+
+export default SlideFormButtons;

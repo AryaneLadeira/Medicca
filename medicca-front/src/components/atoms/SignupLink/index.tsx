@@ -1,6 +1,6 @@
 import { Box, Link, Typography } from '@mui/material';
 
-export default function SignupLink() {
+function SignupLink() {
   return (
     <Box>
       <Typography variant="body1">
@@ -12,3 +12,5 @@ export default function SignupLink() {
     </Box>
   );
 }
+
+export default SignupLink;

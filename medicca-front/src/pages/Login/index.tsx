@@ -6,7 +6,7 @@ import SignupLink from '../../components/atoms/SignupLink';
 import LoginForm from '../../components/organisms/LoginForm';
 import './style.scss';
 
-export default function Login() {
+function Login() {
   return (
     <Box className="login">
       <Container maxWidth="xl">
@@ -33,3 +33,5 @@ export default function Login() {
     </Box>
   );
 }
+
+export default Login;

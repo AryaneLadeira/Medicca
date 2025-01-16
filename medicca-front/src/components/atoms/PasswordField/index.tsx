@@ -6,7 +6,7 @@ interface PasswordFieldProps {
   label: string;
 }
 
-export default function PasswordField({ label }: PasswordFieldProps) {
+function PasswordField({ label }: PasswordFieldProps) {
   const [showPassword, setShowPassword] = useState(false);
 
   const handleClickShowPassword = () => setShowPassword(!showPassword);
@@ -35,3 +35,5 @@ export default function PasswordField({ label }: PasswordFieldProps) {
     />
   );
 }
+
+export default PasswordField;
