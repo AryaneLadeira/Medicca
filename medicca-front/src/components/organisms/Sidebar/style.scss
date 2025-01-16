@@ -1,0 +1,51 @@
+.menu-icon-button {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+}
+
+.sidebar-drawer .MuiDrawer-paper {
+  width: 240px;
+  height: 100%;
+  box-sizing: border-box;
+}
+
+.sidebar-drawer-mobile .MuiDrawer-paper {
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+}
+
+.sidebar-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.sidebar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px;
+  border-bottom: 1px solid #ddd;
+}
+
+.close-icon-button {
+  color: #000;
+}
+
+.sidebar-list {
+  flex: 1;
+}
+
+.sidebar-list-item {
+  padding: 0;
+}
+
+.sidebar-list-button {
+  padding: 8px 16px;
+}
+
+.sidebar-list-icon {
+  min-width: 40px;
+}
