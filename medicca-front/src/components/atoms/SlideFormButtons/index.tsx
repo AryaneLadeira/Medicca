@@ -1,4 +1,5 @@
 import { Box, Button } from '@mui/material';
+import './style.scss';
 
 interface FormButtonsProps {
   isPatient: boolean;
