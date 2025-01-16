@@ -1,10 +1,10 @@
 import { Button, Typography } from '@mui/material';
 import './style.scss';
 
-export default function LoginButton() {
+function LoginButton() {
   return (
     <Button
-      className="login-btn"
+      className="large-btn"
       type="submit"
       variant="contained"
       color="primary"
@@ -14,3 +14,5 @@ export default function LoginButton() {
     </Button>
   );
 }
+
+export default LoginButton;

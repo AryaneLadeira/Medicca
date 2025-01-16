@@ -1,0 +1,31 @@
+.form-container {
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+  height: calc(100vh - 20px);
+  margin: 10px;
+  box-sizing: border-box;
+  border-radius: 30px;
+  width: 100%;
+
+  @media (max-width: 600px) {
+    margin: 0;
+    min-height: 100vh;
+    height: auto;
+  }
+}
+
+.signup {
+  background-image: linear-gradient(#f8f5fd 30%, #dacbfe 70%);
+  display: flex;
+  align-items: center;
+}
+
+.grid-slide-image {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow-x: hidden;
+}
