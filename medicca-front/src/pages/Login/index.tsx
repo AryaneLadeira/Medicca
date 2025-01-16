@@ -1,10 +1,10 @@
 import { Box, Container, Grid2 } from '@mui/material';
-import LoginForm from '../../components/molecules/LoginForm';
-import './style.scss';
-
-import LoginAnimatedImage from '../../components/atoms/LoginAnimatedImage';
+import LoginImage from '../../assets/images/login-image.png';
+import LoginAnimatedImage from '../../components/atoms/FloatingAnimatedImage';
 import SignupLink from '../../components/atoms/SignupLink';
-import LoginHeader from '../../components/molecules/LoginHeader';
+import LoginForm from '../../components/organisms/LoginForm';
+import LoginHeader from '../../components/atoms/LoginHeader';
+import './style.scss';
 
 export default function Login() {
   return (
@@ -12,7 +12,10 @@ export default function Login() {
       <Container maxWidth="xl">
         <Grid2 container spacing={0}>
           <Grid2 size={{ xs: 0, md: 7 }}>
-            <LoginAnimatedImage />
+            <LoginAnimatedImage
+              src={LoginImage}
+              alt="Imagem animada ilustrando a tela inicial"
+            />
           </Grid2>
 
           <Grid2 size={{ xs: 12, md: 5 }}>
