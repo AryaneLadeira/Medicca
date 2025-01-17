@@ -1,32 +1,30 @@
 import { Box, Button, MenuItem, TextField } from '@mui/material';
 import { useEffect, useState } from 'react';
-import './style.scss';
-import PasswordField from '../../atoms/PasswordField';
+import { useSpecialitiesContext } from '../../../context/SpecialitiesContext';
+import { Speciality } from '../../../utils/types';
 import CrmField from '../../atoms/CrmField';
+import PasswordField from '../../atoms/PasswordField';
+import './style.scss';
 
 function DoctorSignupForm() {
   const [formData, setFormData] = useState({
-    nome: '',
+    name: '',
     email: '',
-    senha: '',
+    password: '',
     crm: '',
-    especialidade_id: '',
+    speciality_id: '',
   });
 
-  interface Especialidade {
-    id: number;
-    nome: string;
-  }
-
-  const [especialidades, setEspecialidades] = useState<Especialidade[]>([]);
+  const { getSpecialities } = useSpecialitiesContext();
+  const [specialities, setSpecialities] = useState<Speciality[]>([]);
 
   useEffect(() => {
-    setEspecialidades([
-      { id: 1, nome: 'Cardiologia' },
-      { id: 2, nome: 'Pediatria' },
-      { id: 3, nome: 'Ortopedia' },
-    ]);
-  }, []);
+    const fetchSpecialities = async () => {
+      const data = await getSpecialities();
+      setSpecialities(data);
+    };
+    fetchSpecialities();
+  }, [getSpecialities]);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -37,16 +35,15 @@ function DoctorSignupForm() {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log('Dados do Médico:', formData);
   };
 
   return (
     <Box className="doctor-signup-form-container">
       <form onSubmit={handleSubmit} className="doctor-signup-form">
         <TextField
-          label="Nome Completo"
-          name="nome"
-          value={formData.nome}
+          label="Nome completo"
+          name="name"
+          value={formData.name}
           onChange={handleChange}
           fullWidth
           required
@@ -61,7 +58,14 @@ function DoctorSignupForm() {
           required
         />
 
-        <PasswordField label='Senha' margin='none' />
+        <PasswordField
+          label="Senha"
+          margin="none"
+          value={formData.password}
+          onChange={(password) =>
+            setFormData((prev) => ({ ...prev, password }))
+          }
+        />
 
         <CrmField
           value={formData.crm}
@@ -70,16 +74,16 @@ function DoctorSignupForm() {
 
         <TextField
           label="Especialidade"
-          name="especialidade_id"
-          value={formData.especialidade_id}
+          name="speciality_id"
+          value={formData.speciality_id}
           onChange={handleChange}
           fullWidth
           required
           select
         >
-          {especialidades.map((especialidade) => (
-            <MenuItem key={especialidade.id} value={especialidade.id}>
-              {especialidade.nome}
+          {specialities.map((speciality) => (
+            <MenuItem key={speciality.id} value={speciality.id}>
+              {speciality.name}
             </MenuItem>
           ))}
         </TextField>
@@ -92,7 +96,7 @@ function DoctorSignupForm() {
           sx={{ marginTop: 2 }}
           className="large-btn"
         >
-          Cadastrar Médico
+          Registrar
         </Button>
       </form>
     </Box>

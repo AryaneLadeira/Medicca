@@ -54,3 +54,8 @@ export interface RequestError {
   error: string;
   message: string;
 }
+
+export interface Speciality {
+  id: number;
+  name: string;
+}
