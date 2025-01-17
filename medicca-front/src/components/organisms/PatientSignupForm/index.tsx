@@ -1,5 +1,6 @@
 import { Box, Button, TextField } from '@mui/material';
 import { useState } from 'react';
+import CepField from '../../atoms/CepField';
 import PasswordField from '../../atoms/PasswordField';
 import './style.scss';
 
@@ -11,11 +12,16 @@ function PatientSignupForm() {
     cep: '',
     address: '',
     phone: '',
+    number: '',
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleAddressFetch = (address: string) => {
+    setFormData((prev) => ({ ...prev, address }));
   };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -57,13 +63,10 @@ function PatientSignupForm() {
 
         <PasswordField label="Senha" margin="none" />
 
-        <TextField
-          label="CEP"
-          name="cep"
+        <CepField
           value={formData.cep}
-          onChange={handleChange}
-          fullWidth
-          required
+          onChange={(cep) => setFormData((prev) => ({ ...prev, cep }))}
+          onAddressFetch={handleAddressFetch}
         />
 
         <Box className="address-container">
@@ -77,8 +80,8 @@ function PatientSignupForm() {
           />
           <TextField
             label="Número"
-            name="address"
-            value={formData.address}
+            name="number"
+            value={formData.number}
             onChange={handleChange}
             required
           />
