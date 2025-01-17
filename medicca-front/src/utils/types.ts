@@ -6,10 +6,30 @@ export interface Appointment {
   time: string;
   date: string;
 }
-
 export interface Doctor {
   name: string;
-  specialty: string;
+  cpf: string;
+  cep: string;
+  email: string;
+  password: string;
+  address: string;
+  number: string;
+  phone: string;
+  crm: string;
+  speciality_id: string;
+}
+
+export interface DoctorData {
+  name: string;
+  cpf: string;
+  cep: string;
+  email: string;
+  password: string;
+  address: string;
+  phone: string;
+  registration_date: string;
+  crm: string;
+  speciality_id: string;
 }
 
 export interface Patient {
