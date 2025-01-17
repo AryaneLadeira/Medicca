@@ -12,6 +12,28 @@ export interface Doctor {
   specialty: string;
 }
 
+export interface Patient {
+  name: string;
+  cpf: string;
+  cep: string;
+  email: string;
+  password: string;
+  address: string;
+  number: string;
+  phone: string;
+}
+
+export interface PatientData {
+  name: string;
+  cpf: string;
+  cep: string;
+  email: string;
+  password: string;
+  address: string;
+  phone: string;
+  registration_date: string;
+}
+
 export interface CEPData {
   bairro: string;
   cep: string;
@@ -26,4 +48,9 @@ export interface CEPData {
   siafi: string;
   uf: string;
   unidade: string;
+}
+
+export interface RequestError {
+  error: string;
+  message: string;
 }

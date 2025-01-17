@@ -21,8 +21,8 @@ class User extends Authenticatable
         'password',
         'cpf',
         'cep',
-        'endereco',
-        'numero',
+        'address',
+        'phone',
     ];
 
     /**

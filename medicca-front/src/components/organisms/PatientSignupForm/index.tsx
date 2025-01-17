@@ -1,21 +1,36 @@
 import { Box, Button, TextField } from '@mui/material';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { usePatientsContext } from '../../../context/PatientsContext';
+import { Patient } from '../../../utils/types';
 import CepField from '../../atoms/CepField';
 import CpfField from '../../atoms/CpfField';
 import PasswordField from '../../atoms/PasswordField';
 import PhoneField from '../../atoms/PhoneField';
+import Toast from '../../atoms/Toast';
 import './style.scss';
 
 function PatientSignupForm() {
-  const [formData, setFormData] = useState({
+  const { createNewPatient } = usePatientsContext();
+
+  const [formData, setFormData] = useState<Patient>({
     name: '',
     cpf: '',
-    email: '',
     cep: '',
+    email: '',
+    password: '',
     address: '',
-    phone: '',
     number: '',
+    phone: '',
   });
+
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [toastOpen, setToastOpen] = useState(false);
+  const [toastMessage, setToastMessage] = useState('');
+  const [toastSeverity, setToastSeverity] = useState<'success' | 'error'>(
+    'success'
+  );
+  const navigate = useNavigate();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -26,9 +41,45 @@ function PatientSignupForm() {
     setFormData((prev) => ({ ...prev, address }));
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const clearForm = () => {
+    setFormData({
+      name: '',
+      cpf: '',
+      cep: '',
+      email: '',
+      password: '',
+      address: '',
+      number: '',
+      phone: '',
+    });
+  };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log('Form Data:', formData);
+    setIsSubmitting(true);
+
+    try {
+      await createNewPatient(formData);
+      setToastMessage(
+        'Sua conta foi cadastrada com sucesso! Redirecionando para o login...'
+      );
+      setToastSeverity('success');
+      setToastOpen(true);
+      clearForm();
+      setTimeout(() => navigate('/login'), 3000);
+    } catch (error) {
+      const err = error as { message: string };
+
+      if (err.message) {
+        setToastMessage(`Ocorreu um erro ao criar a conta: ${err.message}`);
+      } else {
+        setToastMessage('Ocorreu um erro desconhecido.');
+      }
+      setToastSeverity('error');
+      setToastOpen(true);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -58,7 +109,14 @@ function PatientSignupForm() {
           required
         />
 
-        <PasswordField label="Senha" margin="none" />
+        <PasswordField
+          label="Senha"
+          margin="none"
+          value={formData.password}
+          onChange={(password) =>
+            setFormData((prev) => ({ ...prev, password }))
+          }
+        />
 
         <CepField
           value={formData.cep}
@@ -96,10 +154,18 @@ function PatientSignupForm() {
           fullWidth
           sx={{ marginTop: 2 }}
           className="large-btn"
+          disabled={isSubmitting}
         >
-          Cadastrar
+          {isSubmitting ? 'Cadastrando...' : 'Cadastrar'}
         </Button>
       </form>
+
+      <Toast
+        open={toastOpen}
+        message={toastMessage}
+        severity={toastSeverity}
+        onClose={() => setToastOpen(false)}
+      />
     </Box>
   );
 }
