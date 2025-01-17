@@ -15,19 +15,19 @@ import './style.scss';
 interface MenuItemType {
   text: string;
   icon?: React.ReactNode;
-  onClick: () => void;
+  path: string;
 }
 
 function MenuComponent() {
-  const userType = 'patient';
+  const userType = 'patient'; // Substitua conforme o valor real do userType
   const navigate = useNavigate();
 
   const menuItems: MenuItemType[] = [
-    { text: 'Home', icon: <HomeIcon />, onClick: () => navigate('/') },
+    { text: 'Home', icon: <HomeIcon />, path: '/' },
     {
       text: 'Agendamentos',
       icon: <CalendarMonthIcon />,
-      onClick: () => navigate('/agendamentos'),
+      path: '/agendamentos',
     },
   ];
 
@@ -35,16 +35,20 @@ function MenuComponent() {
     menuItems.push({
       text: 'Médicos',
       icon: <MedicalInformationIcon />,
-      onClick: () => navigate('/medicos'),
+      path: '/medicos',
     });
   }
+
+  const handleNavigate = (path: string) => {
+    navigate(path);
+  };
 
   return (
     <List className="sidebar-list">
       {menuItems.map((item) => (
         <ListItem disablePadding key={item.text} className="sidebar-list-item">
           <ListItemButton
-            onClick={item.onClick}
+            onClick={() => handleNavigate(item.path)}
             className="sidebar-list-button"
           >
             {item.icon && (

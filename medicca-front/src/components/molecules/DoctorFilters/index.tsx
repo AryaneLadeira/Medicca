@@ -36,7 +36,7 @@ function DoctorFilters({ doctors, setFilteredDoctors }: DoctorFiltersProps) {
   useEffect(() => {
     applyFilters();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [filters, doctors]);
+  }, [filters]);
 
   const handleFilterChange = (field: string, value: unknown) => {
     setFilters({ ...filters, [field]: value });
