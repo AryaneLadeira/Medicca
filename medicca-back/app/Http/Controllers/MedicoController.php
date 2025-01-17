@@ -21,36 +21,47 @@ class MedicoController extends Controller
 
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'cpf' => 'required|string|unique:users,cpf',
-            'cep' => 'required|string|size:8',
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required|string|min:5',
-            'endereco' => 'required|string',
-            'numero' => 'required|string',
-            'crm' => 'required|string|unique:medicos,crm',
-            'especialidade_id' => 'required|exists:especialidades,id',
-        ]);
+        try {
+            $validated = $request->validate([
+                'name' => 'required|string|max:255',
+                'cpf' => 'required|string|unique:users,cpf',
+                'cep' => 'required|string|size:8',
+                'email' => 'required|email|unique:users,email',
+                'password' => 'required|string|min:5',
+                'address' => 'required|string',
+                'phone' => 'required|string',
+                'crm' => 'required|string|unique:medicos,crm',
+                'especialidade_id' => 'required|exists:especialidades,id',
+            ]);
 
-        $user = User::create([
-            'name' => $validated['name'],
-            'cpf' => $validated['cpf'],
-            'cep' => $validated['cep'],
-            'email' => $validated['email'],
-            'password' => bcrypt($validated['password']),
-            'endereco' => $validated['endereco'],
-            'numero' => $validated['numero'],
-        ]);
+            $user = User::create([
+                'name' => $validated['name'],
+                'cpf' => $validated['cpf'],
+                'cep' => $validated['cep'],
+                'email' => $validated['email'],
+                'password' => bcrypt($validated['password']),
+                'address' => $validated['address'],
+                'phone' => $validated['phone'],
+            ]);
 
-        $medico = Medico::create([
-            'user_id' => $user->id,
-            'crm' => $validated['crm'],
-            'especialidade_id' => $validated['especialidade_id'],
-        ]);
+            $medico = Medico::create([
+                'user_id' => $user->id,
+                'crm' => $validated['crm'],
+                'especialidade_id' => $validated['especialidade_id'],
+            ]);
 
-        return response()->json($medico, 201);
+            return response()->json($medico, 201);
+
+        } catch (\Exception $e) {
+            \Log::error('Erro ao criar médico: ' . $e->getMessage());
+
+            return response()->json([
+                'error' => 'Erro ao criar o médico.',
+                'message' => $e->getMessage()
+            ], 500);
+        }
     }
+
 
     public function show(string $id)
     {
@@ -67,8 +78,8 @@ class MedicoController extends Controller
             'name' => 'nullable|string|max:255',
             'cpf' => 'nullable|string|unique:users,cpf,' . $medico->user_id,
             'cep' => 'nullable|string|size:8',
-            'endereco' => 'nullable|string',
-            'numero' => 'nullable|string',
+            'address' => 'nullable|string',
+            'phone' => 'nullable|string',
             'crm' => 'nullable|string|unique:medicos,crm,' . $medico->id,
             'especialidade_id' => 'nullable|exists:especialidades,id',
         ]);
