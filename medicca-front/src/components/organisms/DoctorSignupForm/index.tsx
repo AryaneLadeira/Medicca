@@ -2,6 +2,7 @@ import { Box, Button, MenuItem, TextField } from '@mui/material';
 import { useEffect, useState } from 'react';
 import './style.scss';
 import PasswordField from '../../atoms/PasswordField';
+import CrmField from '../../atoms/CrmField';
 
 function DoctorSignupForm() {
   const [formData, setFormData] = useState({
@@ -62,13 +63,9 @@ function DoctorSignupForm() {
 
         <PasswordField label='Senha' margin='none' />
 
-        <TextField
-          label="CRM"
-          name="crm"
+        <CrmField
           value={formData.crm}
-          onChange={handleChange}
-          fullWidth
-          required
+          onChange={(crm) => setFormData((prev) => ({ ...prev, crm }))}
         />
 
         <TextField
