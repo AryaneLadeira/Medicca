@@ -1,9 +1,10 @@
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
+import ProtectedLayout from '../components/templates/ProtectedLayout';
+import Appointments from '../pages/Appointments';
 import Home from '../pages/Home';
 import Login from '../pages/Login';
 import Signup from '../pages/Signup';
 import ProtectedRoute from './ProtectedRoute';
-import ProtectedLayout from '../components/templates/ProtectedLayout';
 
 const AppRoutes = () => {
   return (
@@ -19,6 +20,7 @@ const AppRoutes = () => {
         <Route element={<ProtectedLayout />}>
           <Route element={<ProtectedRoute />}>
             <Route path="/" element={<Home />} />
+            <Route path="/agendamentos" element={<Appointments />} />
           </Route>
         </Route>
       </Routes>
