@@ -1,5 +1,8 @@
 import { Avatar, Box, Card, CardContent, Typography } from '@mui/material';
+import { useState } from 'react';
 import { Appointment } from '../../../utils/types';
+import DeleteAppointmentDialog from '../../molecules/DeleteAppointmentDialog';
+import EditAppointmentDialog from '../../molecules/EditAppointmentDialog';
 import AppointmentActions from '../AppointmentActions';
 import './style.scss';
 
@@ -16,12 +19,32 @@ function AppointmentCard({
   userType,
   hasActions,
 }: AppointmentCardProps) {
-  const handleEdit = () => {
-    console.log('Editar agendamento');
+  const [openDeleteModal, setOpenDeleteModal] = useState(false);
+  const [openEditModal, setOpenEditModal] = useState(false);
+  const handleDeleteOpen = () => {
+    setOpenDeleteModal(true);
   };
 
-  const handleDelete = () => {
-    console.log('Excluir agendamento');
+  const handleDeleteClose = () => {
+    setOpenDeleteModal(false);
+  };
+
+  const handleDeleteConfirm = () => {
+    console.log('Agendamento desmarcado');
+    setOpenDeleteModal(false);
+  };
+
+  const handleEditOpen = () => {
+    setOpenEditModal(true);
+  };
+
+  const handleEditClose = () => {
+    setOpenEditModal(false);
+  };
+
+  const handleEditConfirm = (updatedAppointment: Appointment) => {
+    console.log('Agendamento editado:', updatedAppointment);
+    setOpenEditModal(false);
   };
 
   return (
@@ -53,7 +76,10 @@ function AppointmentCard({
           </CardContent>
 
           {hasActions ? (
-            <AppointmentActions onEdit={handleEdit} onDelete={handleDelete} />
+            <AppointmentActions
+              onEdit={handleEditOpen}
+              onDelete={handleDeleteOpen}
+            />
           ) : (
             ''
           )}
@@ -63,6 +89,19 @@ function AppointmentCard({
           Você não tem consultas agendadas.
         </Typography>
       )}
+
+      <DeleteAppointmentDialog
+        open={openDeleteModal}
+        onClose={handleDeleteClose}
+        onConfirm={handleDeleteConfirm}
+      />
+
+      <EditAppointmentDialog
+        open={openEditModal}
+        onClose={handleEditClose}
+        appointment={appointment}
+        onEditConfirm={handleEditConfirm}
+      />
     </Card>
   );
 }
