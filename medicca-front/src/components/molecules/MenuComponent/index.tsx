@@ -1,6 +1,6 @@
-// MenuComponent.tsx
 import { Home as HomeIcon } from '@mui/icons-material';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
+import MedicalInformationIcon from '@mui/icons-material/MedicalInformation';
 import {
   List,
   ListItem,
@@ -19,6 +19,7 @@ interface MenuItemType {
 }
 
 function MenuComponent() {
+  const userType = 'patient';
   const navigate = useNavigate();
 
   const menuItems: MenuItemType[] = [
@@ -29,6 +30,14 @@ function MenuComponent() {
       onClick: () => navigate('/agendamentos'),
     },
   ];
+
+  if (userType === 'patient') {
+    menuItems.push({
+      text: 'Médicos',
+      icon: <MedicalInformationIcon />,
+      onClick: () => navigate('/medicos'),
+    });
+  }
 
   return (
     <List className="sidebar-list">
