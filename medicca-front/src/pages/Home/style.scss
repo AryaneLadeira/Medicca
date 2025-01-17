@@ -1,0 +1,19 @@
+.welcome {
+  padding-bottom: 40px;
+}
+
+h3.subtitle {
+  margin-bottom: 15px;
+}
+
+.mobile-center {
+  @media (max-width: 600px) {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+.view-appointments {
+  margin-bottom: 40px;
+}

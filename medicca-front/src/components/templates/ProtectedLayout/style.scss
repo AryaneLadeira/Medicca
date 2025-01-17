@@ -5,6 +5,8 @@
 
 .main {
   flex-grow: 1;
-  padding: 20px;
+  padding: 40px 20px;
   background-color: rgb(241, 241, 241);
+  min-height: calc(100vh - 64px);
+  height: fit-content;
 }

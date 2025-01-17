@@ -20,6 +20,7 @@ function ProtectedLayout() {
           className="main"
           style={{
             marginLeft: isSmallScreen ? 0 : '240px',
+            marginTop: isSmallScreen ? '55px': '',
           }}
         >
           <Outlet />
