@@ -1,7 +1,9 @@
 import { Box, Button, TextField } from '@mui/material';
 import { useState } from 'react';
 import CepField from '../../atoms/CepField';
+import CpfField from '../../atoms/CpfField';
 import PasswordField from '../../atoms/PasswordField';
+import PhoneField from '../../atoms/PhoneField';
 import './style.scss';
 
 function PatientSignupForm() {
@@ -41,14 +43,9 @@ function PatientSignupForm() {
           required
         />
 
-        <TextField
-          label="CPF"
-          name="cpf"
+        <CpfField
           value={formData.cpf}
-          onChange={handleChange}
-          fullWidth
-          required
-          inputProps={{ maxLength: 14 }}
+          onChange={(cpf) => setFormData((prev) => ({ ...prev, cpf }))}
         />
 
         <TextField
@@ -87,13 +84,9 @@ function PatientSignupForm() {
           />
         </Box>
 
-        <TextField
-          label="Telefone"
-          name="phone"
+        <PhoneField
           value={formData.phone}
-          onChange={handleChange}
-          fullWidth
-          required
+          onChange={(phone) => setFormData((prev) => ({ ...prev, phone }))}
         />
 
         <Button
