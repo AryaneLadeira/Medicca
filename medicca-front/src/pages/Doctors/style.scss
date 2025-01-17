@@ -1,0 +1,23 @@
+.doctors-container {
+  padding: 20px;
+}
+
+.filters-container {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.filter-input {
+  width: 200px;
+}
+
+.doctor-cards-container {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+p.empty {
+  text-align: center;
+}

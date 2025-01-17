@@ -1,0 +1,21 @@
+.doctor-card.MuiPaper-root {
+  width: fit-content;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 25px;
+  padding: 15px;
+
+  @media (max-width: 600px) {
+    width: 100%;
+  }
+
+  .avatar {
+    height: 70px;
+    width: 70px;
+  }
+
+  .new-appointment-btn {
+    padding: 15px;
+  }
+}
