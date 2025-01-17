@@ -1,5 +1,6 @@
 // MenuComponent.tsx
 import { Home as HomeIcon } from '@mui/icons-material';
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import {
   List,
   ListItem,
@@ -22,6 +23,11 @@ function MenuComponent() {
 
   const menuItems: MenuItemType[] = [
     { text: 'Home', icon: <HomeIcon />, onClick: () => navigate('/') },
+    {
+      text: 'Agendamentos',
+      icon: <CalendarMonthIcon />,
+      onClick: () => navigate('/agendamentos'),
+    },
   ];
 
   return (
