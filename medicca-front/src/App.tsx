@@ -1,6 +1,6 @@
 import { createTheme, CssBaseline, ThemeProvider } from '@mui/material';
-import AppRoutes from './routes';
-import './style.scss';
+import AppRoutes from './routes/routes';
+import './styles/style.scss';
 
 const theme = createTheme({
   palette: {
@@ -21,6 +21,14 @@ const theme = createTheme({
       fontSize: '2rem',
       fontWeight: 700,
     },
+    h3: {
+      fontSize: '1.6rem',
+      fontWeight: 700,
+    },
+    h5: {
+      fontSize: '1.2rem',
+      fontWeight: 700,
+    },
     body1: {
       fontSize: '1rem',
     },
@@ -31,6 +39,10 @@ const theme = createTheme({
     caption: {
       fontSize: '0.875rem',
       color: '#888',
+    },
+    h6: {
+      fontSize: '1.6rem',
+      fontFamily: '"Poetsen One", serif',
     },
   },
 });

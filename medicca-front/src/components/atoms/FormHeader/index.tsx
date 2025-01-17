@@ -1,5 +1,6 @@
 import { Box, Typography } from '@mui/material';
-import Logo from '../../../assets/images/logo.png';
+
+import Logo from '../Logo';
 import './style.scss';
 
 interface FormHeaderProps {
@@ -10,7 +11,7 @@ interface FormHeaderProps {
 function FormHeader({ title, subtitle }: FormHeaderProps) {
   return (
     <Box className="login-header">
-      <img src={Logo} className="login-logo" alt="Logo Medicca" />
+      <Logo withText={false} />
       <Typography variant="h2" className="login-title">
         {title}
       </Typography>

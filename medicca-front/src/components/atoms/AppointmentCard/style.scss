@@ -1,0 +1,28 @@
+.MuiPaper-root.appointment-card {
+  width: fit-content;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 25px;
+  padding: 15px;
+
+  @media (max-width: 600px) {
+    width: 100%;
+  }
+
+  .avatar {
+    height: 70px;
+    width: 70px;
+  }
+
+  .card-name-container {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 15px;
+  }
+}
+
+.MuiPaper-root.next-appointment-card {
+  color: white;
+  background-color: $secondary;
+}

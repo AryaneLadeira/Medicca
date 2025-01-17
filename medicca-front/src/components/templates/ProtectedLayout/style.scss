@@ -1,0 +1,15 @@
+.protected-container {
+  display: flex;
+  height: calc(100vh - 64px);
+}
+
+.main {
+  flex-grow: 1;
+  box-sizing: border-box;
+  padding: 20px;
+  background-color: $background;
+  min-height: calc(100vh - 64px);
+  height: fit-content;
+  overflow-x: hidden; /* Impede o scroll horizontal */
+}
+
