@@ -1,7 +1,9 @@
 $primary: #8f70f5;
 $secondary: #240e6a;
+$background: rgb(241, 241, 241);
 
 :export {
   primary: $primary;
   secondary: $secondary;
+  background: $background;
 }

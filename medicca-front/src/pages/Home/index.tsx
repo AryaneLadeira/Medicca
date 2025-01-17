@@ -2,6 +2,7 @@ import { Box, Button, Typography } from '@mui/material';
 import CardCarousel from '../../components/molecules/CardCarousel';
 import NextAppointmentSection from '../../components/organisms/NextAppointmentSection';
 import './style.scss';
+import WelcomeSection from '../../components/atoms/WelcomeSection';
 
 function Home() {
   const user = {
@@ -81,12 +82,7 @@ function Home() {
 
   return (
     <Box>
-      <Box className="welcome">
-        <Typography variant="h2">Bem-vindo de volta, {user.name}!</Typography>
-        <Typography variant="body1">
-          Fique à vontade para conferir seus agendamentos!
-        </Typography>
-      </Box>
+      <WelcomeSection name={user.name} />
 
       <NextAppointmentSection
         nextAppointment={user.nextAppointment}
