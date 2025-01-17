@@ -1,6 +1,6 @@
 import { Box, Button, TextField } from '@mui/material';
 import { useState } from 'react';
-import { fetchAddressByCep } from '../../../services/ViaCepService';
+import CepField from '../../atoms/CepField';
 import PasswordField from '../../atoms/PasswordField';
 import './style.scss';
 
@@ -15,34 +15,13 @@ function PatientSignupForm() {
     number: '',
   });
 
-  const [loading, setLoading] = useState(false);
-  const [cepError, setCepError] = useState('');
-
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleCepBlur = async () => {
-    if (!formData.cep) {
-      setCepError('O CEP é obrigatório.');
-      return;
-    }
-
-    setLoading(true);
-    setCepError('');
-    try {
-      const addressData = await fetchAddressByCep(formData.cep);
-      setFormData((prev) => ({
-        ...prev,
-        address: `${addressData.logradouro}, ${addressData.bairro} - ${addressData.localidade}, ${addressData.estado}`,
-      }));
-    } catch (err) {
-      if (err instanceof Error) setCepError('Não foi possível buscar o endereço. Verifique o CEP e tente novamente.');
-      else setCepError('Ocorreu um erro desconhecido.');
-    } finally {
-      setLoading(false);
-    }
+  const handleAddressFetch = (address: string) => {
+    setFormData((prev) => ({ ...prev, address }));
   };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -84,16 +63,10 @@ function PatientSignupForm() {
 
         <PasswordField label="Senha" margin="none" />
 
-        <TextField
-          label="CEP"
-          name="cep"
+        <CepField
           value={formData.cep}
-          onChange={handleChange}
-          onBlur={handleCepBlur}
-          fullWidth
-          required
-          error={!!cepError}
-          helperText={cepError || (loading ? 'Buscando endereço...' : '')}
+          onChange={(cep) => setFormData((prev) => ({ ...prev, cep }))}
+          onAddressFetch={handleAddressFetch}
         />
 
         <Box className="address-container">
