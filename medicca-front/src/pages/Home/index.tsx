@@ -1,8 +1,8 @@
 import { Box, Button, Typography } from '@mui/material';
+import WelcomeSection from '../../components/atoms/WelcomeSection';
 import CardCarousel from '../../components/molecules/CardCarousel';
 import NextAppointmentSection from '../../components/organisms/NextAppointmentSection';
 import './style.scss';
-import WelcomeSection from '../../components/atoms/WelcomeSection';
 
 function Home() {
   const user = {
@@ -24,46 +24,6 @@ function Home() {
         specialty: 'Cardiologia',
         patient: 'Joana Doe',
         countAppointments: 2,
-      },
-      {
-        date: '2024-11-10',
-        time: '14:00',
-        doctor: 'Dr. Roberto Silva',
-        specialty: 'Endocrinologia',
-        patient: 'Richard Tomas',
-        countAppointments: 1,
-      },
-      {
-        date: '2024-11-10',
-        time: '14:00',
-        doctor: 'Dr. Roberto Silva',
-        specialty: 'Endocrinologia',
-        patient: 'Richard Tomas',
-        countAppointments: 5,
-      },
-      {
-        date: '2024-11-10',
-        time: '14:00',
-        doctor: 'Dr. Roberto Silva',
-        specialty: 'Endocrinologia',
-        patient: 'Richard Tomas',
-        countAppointments: 1,
-      },
-      {
-        date: '2024-11-10',
-        time: '14:00',
-        doctor: 'Dr. Roberto Silva',
-        specialty: 'Endocrinologia',
-        patient: 'Richard Tomas',
-        countAppointments: 1,
-      },
-      {
-        date: '2024-11-10',
-        time: '14:00',
-        doctor: 'Dr. Roberto Silva',
-        specialty: 'Endocrinologia',
-        patient: 'Richard Tomas',
-        countAppointments: 1,
       },
       {
         date: '2024-11-10',

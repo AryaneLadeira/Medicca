@@ -1,6 +1,7 @@
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { IconButton, TextField } from '@mui/material';
 import { useState } from 'react';
+import './style.scss';
 
 interface PasswordFieldProps {
   label: string;
