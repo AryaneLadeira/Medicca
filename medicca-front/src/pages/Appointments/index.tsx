@@ -72,7 +72,7 @@ function Appointments() {
   };
 
   return (
-    <Box>
+    <Box className="appointments">
       <Typography variant="h3" className="subtitle">
         Seus agendamentos
       </Typography>

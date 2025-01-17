@@ -6,3 +6,8 @@ export interface Appointment {
   time: string;
   date: string;
 }
+
+export interface Doctor {
+  name: string;
+  specialty: string;
+}

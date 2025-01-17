@@ -1,6 +1,6 @@
-// MenuComponent.tsx
 import { Home as HomeIcon } from '@mui/icons-material';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
+import MedicalInformationIcon from '@mui/icons-material/MedicalInformation';
 import {
   List,
   ListItem,
@@ -15,27 +15,40 @@ import './style.scss';
 interface MenuItemType {
   text: string;
   icon?: React.ReactNode;
-  onClick: () => void;
+  path: string;
 }
 
 function MenuComponent() {
+  const userType = 'patient'; // Substitua conforme o valor real do userType
   const navigate = useNavigate();
 
   const menuItems: MenuItemType[] = [
-    { text: 'Home', icon: <HomeIcon />, onClick: () => navigate('/') },
+    { text: 'Home', icon: <HomeIcon />, path: '/' },
     {
       text: 'Agendamentos',
       icon: <CalendarMonthIcon />,
-      onClick: () => navigate('/agendamentos'),
+      path: '/agendamentos',
     },
   ];
+
+  if (userType === 'patient') {
+    menuItems.push({
+      text: 'Médicos',
+      icon: <MedicalInformationIcon />,
+      path: '/medicos',
+    });
+  }
+
+  const handleNavigate = (path: string) => {
+    navigate(path);
+  };
 
   return (
     <List className="sidebar-list">
       {menuItems.map((item) => (
         <ListItem disablePadding key={item.text} className="sidebar-list-item">
           <ListItemButton
-            onClick={item.onClick}
+            onClick={() => handleNavigate(item.path)}
             className="sidebar-list-button"
           >
             {item.icon && (
