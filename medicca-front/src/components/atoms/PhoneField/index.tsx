@@ -1,6 +1,7 @@
 import { TextField } from '@mui/material';
 import { useState } from 'react';
 import InputMask from 'react-input-mask';
+import { cleanString } from '../../../utils/format';
 
 interface PhoneFieldProps {
   value: string;
@@ -16,7 +17,7 @@ function PhoneField({ value, onChange }: PhoneFieldProps) {
   };
 
   const validatePhone = () => {
-    if (value.length !== 15) {
+    if (cleanString(value).length !== 11) {
       setError('Telefone inválido.');
     } else {
       setError('');
