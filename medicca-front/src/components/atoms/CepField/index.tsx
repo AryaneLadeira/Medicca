@@ -1,5 +1,6 @@
 import { TextField } from '@mui/material';
 import { useState } from 'react';
+import InputMask from 'react-input-mask';
 import { fetchAddressByCep } from '../../../services/ViaCepService';
 
 interface CepFieldProps {
@@ -12,21 +13,10 @@ function CepField({ value, onChange, onAddressFetch }: CepFieldProps) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
-  const formatCep = (cep: string) => {
-    const numericCep = cep.replace(/\D/g, '');
-    if (numericCep.length > 5) {
-      return `${numericCep.slice(0, 5)}-${numericCep.slice(5, 8)}`;
-    }
-    return numericCep;
-  };
-
   const handleCepChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = e.target.value;
-    const formattedValue = formatCep(newValue);
-    if (formattedValue.length <= 9) {
-      onChange(formattedValue);
-    }
     if (error) setError('');
+    onChange(newValue);
   };
 
   const handleBlur = async () => {
@@ -53,16 +43,24 @@ function CepField({ value, onChange, onAddressFetch }: CepFieldProps) {
   };
 
   return (
-    <TextField
-      label="CEP"
+    <InputMask
+      mask="99999-999"
       value={value}
       onChange={handleCepChange}
+      maskChar=" "
       onBlur={handleBlur}
-      fullWidth
-      required
-      error={!!error}
-      helperText={error || (loading ? 'Buscando endereço...' : '')}
-    />
+    >
+      {() => (
+        <TextField
+          label="CEP"
+          value={value}
+          fullWidth
+          required
+          error={!!error}
+          helperText={error || (loading ? 'Buscando endereço...' : '')}
+        />
+      )}
+    </InputMask>
   );
 }
 
