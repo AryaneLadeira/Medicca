@@ -3,6 +3,7 @@ import { useState } from 'react';
 import CepField from '../../atoms/CepField';
 import CpfField from '../../atoms/CpfField';
 import PasswordField from '../../atoms/PasswordField';
+import PhoneField from '../../atoms/PhoneField';
 import './style.scss';
 
 function PatientSignupForm() {
@@ -83,13 +84,9 @@ function PatientSignupForm() {
           />
         </Box>
 
-        <TextField
-          label="Telefone"
-          name="phone"
+        <PhoneField
           value={formData.phone}
-          onChange={handleChange}
-          fullWidth
-          required
+          onChange={(phone) => setFormData((prev) => ({ ...prev, phone }))}
         />
 
         <Button
