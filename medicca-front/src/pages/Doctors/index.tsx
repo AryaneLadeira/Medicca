@@ -16,6 +16,9 @@ function Doctors() {
 
   return (
     <Box className="doctors-container">
+      <Typography variant="h3" className="subtitle">
+        Médicos disponíveis
+      </Typography>
       <DoctorFilters
         doctors={doctors}
         setFilteredDoctors={setFilteredDoctors}
