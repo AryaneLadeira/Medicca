@@ -1,8 +1,9 @@
 import { Box, Typography } from '@mui/material';
-import AppointmentCard from '../../components/atoms/AppointmentCard';
-import { useState } from 'react';
 import dayjs, { Dayjs } from 'dayjs';
+import { useState } from 'react';
+import AppointmentCard from '../../components/atoms/AppointmentCard';
 import AppointmentFilters from '../../components/molecules/AppointmentsFilters';
+import './style.scss';
 
 function Appointments() {
   const appointments = [
@@ -30,7 +31,7 @@ function Appointments() {
     specialty: '',
   });
 
-  const userType = 'doctor';
+  const userType = 'patient';
 
   const filteredAppointments = appointments.filter((appointment) => {
     const { dateRange, name, specialty } = filters;
@@ -49,8 +50,12 @@ function Appointments() {
           appointmentDate.isSame(startDate, 'day')) &&
           (appointmentDate.isBefore(endDate, 'day') ||
             appointmentDate.isSame(endDate, 'day')))) &&
-      (name ? patientOrDoctorName.toLowerCase().includes(name.toLowerCase()) : true) &&
-      (specialty ? appointment.specialty.toLowerCase().includes(specialty.toLowerCase()) : true)
+      (name
+        ? patientOrDoctorName.toLowerCase().includes(name.toLowerCase())
+        : true) &&
+      (specialty
+        ? appointment.specialty.toLowerCase().includes(specialty.toLowerCase())
+        : true)
     );
   });
 
@@ -86,10 +91,13 @@ function Appointments() {
               key={index}
               appointment={appointment}
               userType={userType}
+              hasActions={userType == 'patient'}
             />
           ))
         ) : (
-          <Typography className='empty'>Não há agendamentos para mostrar.</Typography>
+          <Typography className="empty">
+            Não há agendamentos para mostrar.
+          </Typography>
         )}
       </Box>
     </Box>
