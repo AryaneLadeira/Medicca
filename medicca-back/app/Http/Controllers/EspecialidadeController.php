@@ -17,7 +17,7 @@ class EspecialidadeController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'nome' => 'required|string|max:255',
+            'name' => 'required|string|max:255',
         ]);
 
         $especialidade = Especialidade::create($validated);
@@ -37,7 +37,7 @@ class EspecialidadeController extends Controller
         $especialidade = Especialidade::findOrFail($id);
 
         $validated = $request->validate([
-            'nome' => 'required|string|max:255',
+            'name' => 'required|string|max:255',
         ]);
 
         $especialidade->update($validated);

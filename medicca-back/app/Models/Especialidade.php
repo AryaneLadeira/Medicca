@@ -10,7 +10,7 @@ class Especialidade extends Model
     use HasFactory;
 
 
-    protected $fillable = ['nome'];
+    protected $fillable = ['name'];
 
 
     public function medicos()
