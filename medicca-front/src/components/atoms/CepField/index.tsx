@@ -12,9 +12,20 @@ function CepField({ value, onChange, onAddressFetch }: CepFieldProps) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
+  const formatCep = (cep: string) => {
+    const numericCep = cep.replace(/\D/g, '');
+    if (numericCep.length > 5) {
+      return `${numericCep.slice(0, 5)}-${numericCep.slice(5, 8)}`;
+    }
+    return numericCep;
+  };
+
   const handleCepChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = e.target.value;
-    onChange(newValue);
+    const formattedValue = formatCep(newValue);
+    if (formattedValue.length <= 9) {
+      onChange(formattedValue);
+    }
     if (error) setError('');
   };
 
