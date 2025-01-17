@@ -1,6 +1,7 @@
 import { AppBar, Box, Toolbar } from '@mui/material';
 import Logo from '../../atoms/Logo';
 import ProfileAvatar from '../../atoms/ProfileAvatar';
+import './style.scss';
 
 function TopBar() {
   const user = {
