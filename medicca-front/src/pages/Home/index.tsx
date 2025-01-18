@@ -3,11 +3,12 @@ import WelcomeSection from '../../components/atoms/WelcomeSection';
 import CardCarousel from '../../components/molecules/CardCarousel';
 import NextAppointmentSection from '../../components/organisms/NextAppointmentSection';
 import './style.scss';
+import { useAuthContext } from '../../context/AuthContext';
 
 function Home() {
-  const user = {
-    name: 'John Doe',
-    type: 'doctor',
+
+  const { user } = useAuthContext();
+  const userAppointments = {
     nextAppointment: {
       date: '2025-01-20',
       time: '14:00',
@@ -45,8 +46,8 @@ function Home() {
       <WelcomeSection name={user.name} />
 
       <NextAppointmentSection
-        nextAppointment={user.nextAppointment}
-        userType="doctor"
+        nextAppointment={userAppointments.nextAppointment}
+        userType={user.type}
       />
 
       <Box
@@ -63,9 +64,9 @@ function Home() {
           Histórico de consultas
         </Typography>
         <Box className="mobile-center">
-          {user.pastAppointments.length >= 0 ? (
+          {userAppointments.pastAppointments.length >= 0 ? (
             <CardCarousel
-              appointments={user.pastAppointments}
+              appointments={userAppointments.pastAppointments}
               userType={'doctor'}
             />
           ) : (

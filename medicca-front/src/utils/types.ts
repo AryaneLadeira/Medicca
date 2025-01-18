@@ -90,9 +90,26 @@ export interface UserLoginResponse {
   user: User;
 }
 
+export enum UserType {
+  Patient = 'paciente',
+  Doctor = 'medico',
+  Unknown = 'desconhecido',
+}
+
 export interface User {
   id: number;
   name: string;
   email: string;
-  type: 'paciente' | 'medico' | 'desconhecido';
+  type: UserType;
+  specificId: number;
+}
+
+export interface DecodedToken extends User {
+  exp: number;
+  iat: number;
+  sub: string;
+  jti: string;
+  iss: string;
+  nbf: number;
+  prv: string;
 }
