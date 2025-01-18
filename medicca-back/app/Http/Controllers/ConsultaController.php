@@ -42,9 +42,10 @@ class ConsultaController extends Controller
         $validated = $request->validate([
             'paciente_id' => 'required|exists:pacientes,id',
             'medico_id' => 'required|exists:medicos,id',
-            'consultation_date' => 'required|date',
+            'consultation_date' => 'required|date_format:Y-m-d H:i',
             'appointment_date' => 'required|date',
         ]);
+
 
         $consulta = Consulta::create($validated);
         return response()->json($consulta, 201);
