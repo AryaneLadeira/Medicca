@@ -1,12 +1,12 @@
 import { Box, Button, Typography } from '@mui/material';
 import WelcomeSection from '../../components/atoms/WelcomeSection';
 import CardCarousel from '../../components/molecules/CardCarousel';
+import LoadingScreen from '../../components/organisms/LoadingScreen';
 import NextAppointmentSection from '../../components/organisms/NextAppointmentSection';
-import './style.scss';
 import { useAuthContext } from '../../context/AuthContext';
+import './style.scss';
 
 function Home() {
-
   const { user } = useAuthContext();
   const userAppointments = {
     nextAppointment: {
@@ -38,7 +38,7 @@ function Home() {
   };
 
   if (!user) {
-    return <p>Carregando...</p>;
+    return <LoadingScreen />;
   }
 
   return (
