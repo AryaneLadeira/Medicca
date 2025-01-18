@@ -13,6 +13,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuthContext } from '../../../context/AuthContext';
 import Toast from '../../atoms/Toast';
+import LoadingScreen from '../../organisms/LoadingScreen';
 import './style.scss';
 
 interface MenuItemType {
@@ -28,18 +29,19 @@ function MenuComponent() {
   const navigate = useNavigate();
   const { logout, getToken } = useAuthContext();
 
-  // Estados do Toast
   const [toastOpen, setToastOpen] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
   const [toastSeverity, setToastSeverity] = useState<'success' | 'error'>(
     'error'
   );
+  const [loading, setLoading] = useState(false);
 
   const handleNavigate = (path: string) => {
     navigate(path);
   };
 
   const handleLogout = async () => {
+    setLoading(true);
     try {
       if (getToken()) await logout();
       navigate('/login');
@@ -48,6 +50,8 @@ function MenuComponent() {
       setToastMessage('Não foi possível realizar o logout.');
       setToastSeverity('error');
       setToastOpen(true);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -77,6 +81,7 @@ function MenuComponent() {
 
   return (
     <>
+      {loading && <LoadingScreen />}{' '}
       <List className="sidebar-list">
         {menuItems.map((item) => (
           <ListItem
@@ -105,7 +110,6 @@ function MenuComponent() {
           </ListItem>
         ))}
       </List>
-      {/* Adicione o Toast */}
       <Toast
         open={toastOpen}
         message={toastMessage}
