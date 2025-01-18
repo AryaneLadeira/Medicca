@@ -1,13 +1,13 @@
 import { Box } from '@mui/material';
 import { useEffect, useState } from 'react';
-import { Doctor } from '../../../utils/types';
+import { DoctorData } from '../../../utils/types';
 import ClearFiltersButton from '../ClearFiltersButton';
 import NameFilter from '../NameFilter';
 import SpecialtyFilter from '../SpecialtyFilter';
 
 interface DoctorFiltersProps {
-  doctors: Doctor[];
-  setFilteredDoctors: (doctors: Doctor[]) => void;
+  doctors: DoctorData[];
+  setFilteredDoctors: (doctors: DoctorData[]) => void;
 }
 
 function DoctorFilters({ doctors, setFilteredDoctors }: DoctorFiltersProps) {
@@ -23,7 +23,7 @@ function DoctorFilters({ doctors, setFilteredDoctors }: DoctorFiltersProps) {
       const matchesName = doctor.name
         .toLowerCase()
         .includes(name.toLowerCase());
-      const matchesSpecialty = doctor.specialty
+      const matchesSpecialty = doctor.specialty.name
         .toLowerCase()
         .includes(specialty.toLowerCase());
 

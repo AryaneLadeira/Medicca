@@ -1,10 +1,10 @@
 import { cleanString } from '../../utils/format';
-import { Doctor, DoctorData } from '../../utils/types';
+import { DoctorSignup, DoctorSignupData, DoctorData } from '../../utils/types';
 
 const API_URL = 'http://127.0.0.1:8000/api';
 
 export const DoctorService = {
-  createDoctor: async (data: Doctor): Promise<DoctorData> => {
+  createDoctor: async (data: DoctorSignup): Promise<DoctorSignupData> => {
     const currentDate = new Date().toISOString().split('T')[0]; // Data no formato YYYY-MM-DD
 
     const payload = {
@@ -37,5 +37,16 @@ export const DoctorService = {
 
     const doctorData = await response.json();
     return doctorData;
+  },
+
+  getDoctors: async (): Promise<DoctorData[]> => {
+    const response = await fetch(`${API_URL}/medicos`);
+
+    if (!response.ok) {
+      throw new Error('Erro ao buscar médicos');
+    }
+
+    const doctorsData = await response.json();
+    return doctorsData;
   },
 };

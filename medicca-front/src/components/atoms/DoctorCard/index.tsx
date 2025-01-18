@@ -6,11 +6,11 @@ import {
   IconButton,
   Typography,
 } from '@mui/material';
-import { Doctor } from '../../../utils/types';
+import { DoctorData } from '../../../utils/types';
 import './style.scss';
 
 interface DoctorCardProps {
-  doctor: Doctor;
+  doctor: DoctorData;
 }
 
 function DoctorCard({ doctor }: DoctorCardProps) {
@@ -19,9 +19,9 @@ function DoctorCard({ doctor }: DoctorCardProps) {
       <Avatar className="avatar" />
       <CardContent>
         <Typography variant="h5">{doctor.name}</Typography>
-        <Typography>{doctor.specialty}</Typography>
+        <Typography>{doctor.specialty.name}</Typography>
       </CardContent>
-      <IconButton color="secondary" className='new-appointment-btn'>
+      <IconButton color="secondary" className="new-appointment-btn">
         <CalendarMonthIcon />
       </IconButton>
     </Card>
