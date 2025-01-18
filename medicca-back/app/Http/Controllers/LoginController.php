@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Tymon\JWTAuth\Facades\JWTAuth;
+
 
 class LoginController extends Controller
 {
@@ -14,13 +16,12 @@ class LoginController extends Controller
      */
     public function authenticate(Request $request)
     {
-
         $credentials = $request->only('email', 'password');
 
         if (Auth::attempt($credentials)) {
             $user = Auth::user();
 
-            $token = $user->createToken('auth_token')->plainTextToken;
+            $token = JWTAuth::fromUser($user);
 
             return response()->json([
                 'message' => 'Login successful',
