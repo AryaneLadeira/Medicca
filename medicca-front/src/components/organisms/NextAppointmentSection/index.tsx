@@ -1,11 +1,11 @@
 import { Box, Typography } from '@mui/material';
-import { Appointment } from '../../../utils/types';
+import { Appointment, UserType } from '../../../utils/types';
 import AppointmentCard from '../../atoms/AppointmentCard';
 import './style.scss';
 
 interface NextAppointmentSectionProps {
   nextAppointment: Appointment | null;
-  userType: 'doctor' | 'patient';
+  userType: UserType;
 }
 
 function NextAppointmentSection({

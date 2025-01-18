@@ -1,32 +1,49 @@
 import { Box, Button, MenuItem, TextField } from '@mui/material';
 import { useEffect, useState } from 'react';
-import './style.scss';
-import PasswordField from '../../atoms/PasswordField';
+import { useNavigate } from 'react-router-dom';
+import { useDoctorsContext } from '../../../context/DoctorsContext';
+import { useSpecialitiesContext } from '../../../context/SpecialitiesContext';
+import { Speciality } from '../../../utils/types';
+import CepField from '../../atoms/CepField';
+import CpfField from '../../atoms/CpfField';
 import CrmField from '../../atoms/CrmField';
+import PasswordField from '../../atoms/PasswordField';
+import PhoneField from '../../atoms/PhoneField';
+import Toast from '../../atoms/Toast';
+import './style.scss';
 
 function DoctorSignupForm() {
   const [formData, setFormData] = useState({
-    nome: '',
+    name: '',
     email: '',
-    senha: '',
+    password: '',
     crm: '',
-    especialidade_id: '',
+    speciality_id: '',
+    cpf: '',
+    cep: '',
+    address: '',
+    number: '',
+    phone: '',
   });
 
-  interface Especialidade {
-    id: number;
-    nome: string;
-  }
+  const { getSpecialities } = useSpecialitiesContext();
+  const { createNewDoctor } = useDoctorsContext();
+  const [specialities, setSpecialities] = useState<Speciality[]>([]);
+  const [toastOpen, setToastOpen] = useState(false);
+  const [toastMessage, setToastMessage] = useState('');
+  const [toastSeverity, setToastSeverity] = useState<'success' | 'error'>(
+    'success'
+  );
 
-  const [especialidades, setEspecialidades] = useState<Especialidade[]>([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    setEspecialidades([
-      { id: 1, nome: 'Cardiologia' },
-      { id: 2, nome: 'Pediatria' },
-      { id: 3, nome: 'Ortopedia' },
-    ]);
-  }, []);
+    const fetchSpecialities = async () => {
+      const data = await getSpecialities();
+      setSpecialities(data);
+    };
+    fetchSpecialities();
+  }, [getSpecialities]);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -35,23 +52,63 @@ function DoctorSignupForm() {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const clearForm = () => {
+    setFormData({
+      name: '',
+      email: '',
+      password: '',
+      crm: '',
+      speciality_id: '',
+      cpf: '',
+      cep: '',
+      address: '',
+      number: '',
+      phone: '',
+    });
+  };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log('Dados do Médico:', formData);
+    try {
+      await createNewDoctor(formData);
+      setToastMessage(
+        'Sua conta foi cadastrada com sucesso! Redirecionando para o login...'
+      );
+      setToastSeverity('success');
+      setToastOpen(true);
+      clearForm();
+      setTimeout(() => navigate('/login'), 3000);
+    } catch (error) {
+      const err = error as { message: string };
+      if (err.message) {
+        setToastMessage(`Ocorreu um erro ao criar a conta: ${err.message}`);
+      } else {
+        setToastMessage('Ocorreu um erro desconhecido.');
+      }
+      setToastSeverity('error');
+      setToastOpen(true);
+    }
+  };
+
+  const handleAddressFetch = (address: string) => {
+    setFormData((prev) => ({ ...prev, address }));
   };
 
   return (
     <Box className="doctor-signup-form-container">
       <form onSubmit={handleSubmit} className="doctor-signup-form">
         <TextField
-          label="Nome Completo"
-          name="nome"
-          value={formData.nome}
+          label="Nome completo"
+          name="name"
+          value={formData.name}
           onChange={handleChange}
           fullWidth
           required
         />
-
+        <CpfField
+          value={formData.cpf}
+          onChange={(cpf) => setFormData((prev) => ({ ...prev, cpf }))}
+        />
         <TextField
           label="Email"
           name="email"
@@ -60,26 +117,58 @@ function DoctorSignupForm() {
           fullWidth
           required
         />
-
-        <PasswordField label='Senha' margin='none' />
+        <PasswordField
+          label="Senha"
+          margin="none"
+          value={formData.password}
+          onChange={(password) =>
+            setFormData((prev) => ({ ...prev, password }))
+          }
+        />
+        <CepField
+          value={formData.cep}
+          onChange={(cep) => setFormData((prev) => ({ ...prev, cep }))}
+          onAddressFetch={handleAddressFetch}
+        />
+        <Box className="address-container">
+          <TextField
+            label="Endereço Completo"
+            name="address"
+            value={formData.address}
+            onChange={handleChange}
+            fullWidth
+            required
+          />
+          <TextField
+            label="Número"
+            name="number"
+            value={formData.number}
+            onChange={handleChange}
+            required
+          />
+        </Box>
+        <PhoneField
+          value={formData.phone}
+          onChange={(phone) => setFormData((prev) => ({ ...prev, phone }))}
+        />
 
         <CrmField
-          value={formData.crm}
           onChange={(crm) => setFormData((prev) => ({ ...prev, crm }))}
+          value={formData.crm}
         />
 
         <TextField
           label="Especialidade"
-          name="especialidade_id"
-          value={formData.especialidade_id}
+          name="speciality_id"
+          value={formData.speciality_id}
           onChange={handleChange}
           fullWidth
           required
           select
         >
-          {especialidades.map((especialidade) => (
-            <MenuItem key={especialidade.id} value={especialidade.id}>
-              {especialidade.nome}
+          {specialities.map((speciality) => (
+            <MenuItem key={speciality.id} value={speciality.id}>
+              {speciality.name}
             </MenuItem>
           ))}
         </TextField>
@@ -92,9 +181,16 @@ function DoctorSignupForm() {
           sx={{ marginTop: 2 }}
           className="large-btn"
         >
-          Cadastrar Médico
+          Registrar
         </Button>
       </form>
+
+      <Toast
+        open={toastOpen}
+        message={toastMessage}
+        severity={toastSeverity}
+        onClose={() => setToastOpen(false)}
+      />
     </Box>
   );
 }

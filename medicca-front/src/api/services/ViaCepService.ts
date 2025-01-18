@@ -1,4 +1,5 @@
-import { CEPData } from "../utils/types";
+import { CEPData } from "../../utils/types";
+
 
 export async function fetchAddressByCep(cep: string): Promise<CEPData> {
   const sanitizedCep = cep.replace(/\D/g, '');

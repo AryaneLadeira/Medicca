@@ -1,6 +1,6 @@
 import { Avatar, Box, Card, CardContent, Typography } from '@mui/material';
 import { useState } from 'react';
-import { Appointment } from '../../../utils/types';
+import { Appointment, UserType } from '../../../utils/types';
 import DeleteAppointmentDialog from '../../molecules/DeleteAppointmentDialog';
 import EditAppointmentDialog from '../../molecules/EditAppointmentDialog';
 import AppointmentActions from '../AppointmentActions';
@@ -9,7 +9,7 @@ import './style.scss';
 interface AppointmentCardProps {
   appointment?: Appointment;
   nextAppointment?: boolean;
-  userType: 'doctor' | 'patient';
+  userType: UserType;
   hasActions?: boolean;
 }
 
@@ -59,12 +59,12 @@ function AppointmentCard({
           <CardContent>
             <Box className="card-name-container">
               <Typography variant="h5" className="card-name">
-                {userType === 'doctor'
+                {userType === UserType.Doctor
                   ? appointment.patient
                   : appointment.doctor}
               </Typography>
               <Typography>
-                {userType === 'doctor'
+                {userType === UserType.Doctor
                   ? appointment.countAppointments + 'ª consulta'
                   : appointment.specialty}
               </Typography>

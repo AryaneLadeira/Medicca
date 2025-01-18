@@ -1,4 +1,8 @@
 import { createTheme, CssBaseline, ThemeProvider } from '@mui/material';
+import { AuthProvider } from './api/providers/AuthProvider';
+import { DoctorsProvider } from './api/providers/DoctorsProvider';
+import { PatientsProvider } from './api/providers/PatientsProvider';
+import { SpecialitiesProvider } from './api/providers/SpecialitiesProvider';
 import AppRoutes from './routes/routes';
 import './styles/style.scss';
 
@@ -50,8 +54,16 @@ const theme = createTheme({
 function App() {
   return (
     <ThemeProvider theme={theme}>
-      <AppRoutes />
-      <CssBaseline />
+      <AuthProvider>
+        <PatientsProvider>
+          <SpecialitiesProvider>
+            <DoctorsProvider>
+              <AppRoutes />
+              <CssBaseline />
+            </DoctorsProvider>
+          </SpecialitiesProvider>
+        </PatientsProvider>
+      </AuthProvider>
     </ThemeProvider>
   );
 }

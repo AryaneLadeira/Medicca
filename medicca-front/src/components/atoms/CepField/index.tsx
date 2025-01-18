@@ -1,7 +1,7 @@
 import { TextField } from '@mui/material';
 import { useState } from 'react';
 import InputMask from 'react-input-mask';
-import { fetchAddressByCep } from '../../../services/ViaCepService';
+import { fetchAddressByCep } from '../../../api/services/ViaCepService';
 
 interface CepFieldProps {
   value: string;
@@ -33,7 +33,9 @@ function CepField({ value, onChange, onAddressFetch }: CepFieldProps) {
       onAddressFetch(fullAddress);
     } catch (err) {
       if (err instanceof Error) {
-        setError('Não foi possível buscar o endereço. Verifique o CEP e tente novamente.');
+        setError(
+          'Não foi possível buscar o endereço. Verifique o CEP e tente novamente.'
+        );
       } else {
         setError('Ocorreu um erro desconhecido.');
       }
