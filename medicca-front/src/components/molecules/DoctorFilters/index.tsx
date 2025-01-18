@@ -1,4 +1,4 @@
-import { Box } from '@mui/material';
+import { Box, TextField } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { DoctorData } from '../../../utils/types';
 import ClearFiltersButton from '../ClearFiltersButton';
@@ -14,9 +14,10 @@ function DoctorFilters({ doctors, setFilteredDoctors }: DoctorFiltersProps) {
   const [filters, setFilters] = useState({
     name: '',
     specialty: '',
+    crm: '',
   });
 
-  const { name, specialty } = filters;
+  const { name, specialty, crm } = filters;
 
   const applyFilters = () => {
     const filtered = doctors.filter((doctor) => {
@@ -26,8 +27,9 @@ function DoctorFilters({ doctors, setFilteredDoctors }: DoctorFiltersProps) {
       const matchesSpecialty = doctor.specialty.name
         .toLowerCase()
         .includes(specialty.toLowerCase());
+      const matchesCrm = doctor.crm.includes(crm);
 
-      return matchesName && matchesSpecialty;
+      return matchesName && matchesSpecialty && matchesCrm;
     });
 
     setFilteredDoctors(filtered);
@@ -46,10 +48,11 @@ function DoctorFilters({ doctors, setFilteredDoctors }: DoctorFiltersProps) {
     setFilters({
       name: '',
       specialty: '',
+      crm: '',
     });
   };
 
-  const hasFiltersApplied = () => name !== '' || specialty !== '';
+  const hasFiltersApplied = () => name !== '' || specialty !== '' || crm !== '';
 
   return (
     <Box
@@ -67,6 +70,11 @@ function DoctorFilters({ doctors, setFilteredDoctors }: DoctorFiltersProps) {
       <SpecialtyFilter
         value={specialty}
         onChange={(e) => handleFilterChange('specialty', e.target.value)}
+      />
+      <TextField
+        label="CRM"
+        value={crm}
+        onChange={(e) => handleFilterChange('crm', e.target.value)}
       />
       <ClearFiltersButton
         onClick={handleClearFilters}
