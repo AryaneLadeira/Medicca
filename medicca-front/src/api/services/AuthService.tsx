@@ -23,29 +23,28 @@ export const AuthService = {
     }
 
     const { token, user } = await response.json();
-    sessionStorage.setItem('authToken', token);
     return { token, user };
   },
 
   logout: async (): Promise<void> => {
-    const token = sessionStorage.getItem('authToken');
+    const token = sessionStorage.getItem('token');
 
     if (!token) {
-      throw new Error('Usuário não autenticado.');
+      throw {
+        message: 'Usuário não autenticado',
+      };
     }
 
     const response = await fetch(`${API_URL}/logout`, {
       method: 'POST',
       headers: {
+        'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`,
       },
-      credentials: 'include',
     });
 
     if (!response.ok) {
       throw new Error('Falha no logout.');
     }
-
-    sessionStorage.removeItem('authToken');
   },
 };

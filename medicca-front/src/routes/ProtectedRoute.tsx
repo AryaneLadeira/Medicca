@@ -1,11 +1,12 @@
 import { Navigate, Outlet } from 'react-router-dom';
-import { useAuthContext } from '../context/AuthContext'; // Usando a função de contexto
+import LoadingScreen from '../components/organisms/LoadingScreen';
+import { useAuthContext } from '../context/AuthContext';
 
 function ProtectedRoute() {
-  const { isAuthenticated, loadingToken } = useAuthContext(); // Garantindo que o contexto não é undefined
+  const { isAuthenticated, loadingToken } = useAuthContext();
 
   if (loadingToken) {
-    return <div>Loading...</div>;
+    return <LoadingScreen />;
   }
 
   return isAuthenticated() ? <Outlet /> : <Navigate to="/login" />;
