@@ -80,7 +80,22 @@ class User extends Authenticatable implements JWTSubject
 
     public function getJWTCustomClaims()
     {
-        return [];
+        $type = $this->type();
+
+        $specificId = null;
+        if ($type === 'medico' && $this->medico) {
+            $specificId = $this->medico->id;
+        } elseif ($type === 'paciente' && $this->paciente) {
+            $specificId = $this->paciente->id;
+        }
+
+        return [
+            'id' => $this->id,
+            'name' => $this->name,
+            'email' => $this->email,
+            'type' => $type,
+            'specificId' => $specificId,
+        ];
     }
 
 }
