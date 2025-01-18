@@ -79,3 +79,20 @@ export interface Speciality {
   id: number;
   name: string;
 }
+
+export interface UserLogin {
+  email: number;
+  senha: string;
+}
+
+export interface UserLoginResponse {
+  token: string;
+  user: User;
+}
+
+export interface User {
+  id: number;
+  name: string;
+  email: string;
+  type: 'paciente' | 'medico' | 'desconhecido';
+}

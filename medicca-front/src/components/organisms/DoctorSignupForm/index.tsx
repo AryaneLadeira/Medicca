@@ -1,7 +1,7 @@
 import { Box, Button, MenuItem, TextField } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useDoctorsContext } from '../../../context/DoctorsProvider';
+import { useDoctorsContext } from '../../../context/DoctorsContext';
 import { useSpecialitiesContext } from '../../../context/SpecialitiesContext';
 import { Speciality } from '../../../utils/types';
 import CepField from '../../atoms/CepField';

@@ -1,8 +1,8 @@
 import { ReactNode } from 'react';
 
+import { DoctorsContext } from '../../context/DoctorsContext';
 import { Doctor, DoctorData } from '../../utils/types';
 import { DoctorService } from '../services/DoctorService';
-import { DoctorsContext } from '../../context/DoctorsProvider';
 
 interface DoctorsProviderProps {
   children: ReactNode;
