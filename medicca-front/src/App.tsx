@@ -1,4 +1,5 @@
 import { createTheme, CssBaseline, ThemeProvider } from '@mui/material';
+import { AppointmentsProvider } from './api/providers/AppointmentsProvider';
 import { AuthProvider } from './api/providers/AuthProvider';
 import { DoctorsProvider } from './api/providers/DoctorsProvider';
 import { PatientsProvider } from './api/providers/PatientsProvider';
@@ -56,12 +57,14 @@ function App() {
     <ThemeProvider theme={theme}>
       <AuthProvider>
         <PatientsProvider>
-          <SpecialitiesProvider>
-            <DoctorsProvider>
-              <AppRoutes />
-              <CssBaseline />
-            </DoctorsProvider>
-          </SpecialitiesProvider>
+          <AppointmentsProvider>
+            <SpecialitiesProvider>
+              <DoctorsProvider>
+                <AppRoutes />
+                <CssBaseline />
+              </DoctorsProvider>
+            </SpecialitiesProvider>
+          </AppointmentsProvider>
         </PatientsProvider>
       </AuthProvider>
     </ThemeProvider>
