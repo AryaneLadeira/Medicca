@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log; // Importar a classe de Log
+use Illuminate\Support\Facades\Log;
 
 class LoginController extends Controller
 {
@@ -19,10 +19,20 @@ class LoginController extends Controller
 
         if (Auth::attempt($credentials)) {
             $user = Auth::user();
+
+            $token = $user->createToken('auth_token')->plainTextToken;
+
             return response()->json([
                 'message' => 'Login successful',
-                'user' => $user,
+                'token' => $token,
+                'user' => [
+                    'id' => $user->id,
+                    'name' => $user->name,
+                    'email' => $user->email,
+                    'type' => $user->type(),
+                ],
             ], 200);
+
         }
 
         return response()->json([
@@ -33,11 +43,8 @@ class LoginController extends Controller
 
     public function logout(Request $request)
     {
-        Auth::logout();
-
-        $request->session()->invalidate();
-
-        $request->session()->regenerateToken();
+        $user = $request->user();
+        $user->tokens()->delete();
 
         return response()->json([
             'message' => 'Logout successful',
