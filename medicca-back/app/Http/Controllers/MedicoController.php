@@ -10,13 +10,35 @@ use Illuminate\Http\Request;
 class MedicoController extends Controller
 {
 
-
     public function index()
     {
-        $medicos = Medico::with('user')->get();
+        $medicos = Medico::join('users', 'medicos.user_id', '=', 'users.id')
+            ->join('especialidades', 'medicos.especialidade_id', '=', 'especialidades.id')
+            ->select(
+                'medicos.id',
+                'medicos.user_id',
+                'medicos.crm',
+                'users.name as name',
+                'especialidades.id as especialidade_id',
+                'especialidades.name as especialidade_name'
+            )
+            ->orderBy('users.name', 'asc')
+            ->get();
 
-        return response()->json($medicos);
+        return response()->json($medicos->map(function ($medico) {
+            return [
+                'id' => $medico->id,
+                'user_id' => $medico->user_id,
+                'crm' => $medico->crm,
+                'name' => $medico->name,
+                'specialty' => [
+                    'id' => $medico->especialidade_id,
+                    'name' => $medico->especialidade_name,
+                ],
+            ];
+        }));
     }
+
 
 
     public function store(Request $request)
