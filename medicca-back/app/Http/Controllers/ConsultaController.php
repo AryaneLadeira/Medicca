@@ -4,21 +4,31 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Consulta;
+use App\Models\User;
 
 class ConsultaController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $consultas = Consulta::with(['paciente', 'medico'])->get();
+        $userId = $request->query('user_id');
+        $user = User::findOrFail($userId);
+
+        $consultas = Consulta::with(['paciente', 'medico'])
+            ->when($user->type() == 'paciente', function ($query) use ($user) {
+                return $query->where('paciente_id', $user->paciente->id);
+            })
+            ->when($user->type() == 'medico', function ($query) use ($user) {
+                return $query->where('medico_id', $user->medico->id);
+            })
+            ->orderBy('consultation_date', 'desc')
+            ->get();
+
         return response()->json($consultas);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
         // Caso seja necessário, retorne uma view para criação de consultas.
@@ -32,8 +42,8 @@ class ConsultaController extends Controller
         $validated = $request->validate([
             'paciente_id' => 'required|exists:pacientes,id',
             'medico_id' => 'required|exists:medicos,id',
-            'data_consulta' => 'required|date',
-            'data_agendamento' => 'required|date',
+            'consultation_date' => 'required|date',
+            'appointment_date' => 'required|date',
         ]);
 
         $consulta = Consulta::create($validated);
@@ -67,8 +77,8 @@ class ConsultaController extends Controller
         $validated = $request->validate([
             'paciente_id' => 'nullable|exists:pacientes,id',
             'medico_id' => 'nullable|exists:medicos,id',
-            'data_consulta' => 'nullable|date',
-            'data_agendamento' => 'nullable|date',
+            'consultation_date' => 'nullable|date',
+            'appointment_date' => 'nullable|date',
         ]);
 
         $consulta->update($validated);
