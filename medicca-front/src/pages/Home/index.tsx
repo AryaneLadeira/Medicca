@@ -1,5 +1,6 @@
 import { Box, Button, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import WelcomeSection from '../../components/atoms/WelcomeSection';
 import CardCarousel from '../../components/molecules/CardCarousel';
 import LoadingScreen from '../../components/organisms/LoadingScreen';
@@ -19,6 +20,7 @@ function Home() {
   } | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string>();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (user) {
@@ -57,8 +59,14 @@ function Home() {
         className="view-appointments mobile-center"
         sx={{ display: 'flex', gap: '10px', marginTop: '20px' }}
       >
-        <Button variant="contained" color="primary">
-          Ver minhas consultas
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => {
+            navigate('/agendamentos');
+          }}
+        >
+          Ver meus agendamentos
         </Button>
       </Box>
 
