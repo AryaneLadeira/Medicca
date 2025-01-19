@@ -11,6 +11,11 @@ interface AppointmentCardProps {
   nextAppointment?: boolean;
   userType: UserType;
   hasActions?: boolean;
+  onUpdateAppointments?: () => void;
+  showToast?: (
+    message: string,
+    severity: 'success' | 'error' | 'info' | 'warning'
+  ) => void;
 }
 
 function AppointmentCard({
@@ -18,6 +23,8 @@ function AppointmentCard({
   nextAppointment,
   userType,
   hasActions,
+  onUpdateAppointments,
+  showToast,
 }: AppointmentCardProps) {
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
   const [openEditModal, setOpenEditModal] = useState(false);
@@ -29,21 +36,11 @@ function AppointmentCard({
     setOpenDeleteModal(false);
   };
 
-  const handleDeleteConfirm = () => {
-    console.log('Agendamento desmarcado');
-    setOpenDeleteModal(false);
-  };
-
   const handleEditOpen = () => {
     setOpenEditModal(true);
   };
 
   const handleEditClose = () => {
-    setOpenEditModal(false);
-  };
-
-  const handleEditConfirm = (updatedAppointment: Appointment) => {
-    console.log('Agendamento editado:', updatedAppointment);
     setOpenEditModal(false);
   };
 
@@ -60,18 +57,18 @@ function AppointmentCard({
             <Box className="card-name-container">
               <Typography variant="h5" className="card-name">
                 {userType === UserType.Doctor
-                  ? appointment.patient
-                  : appointment.doctor}
+                  ? appointment.patient.name
+                  : appointment.doctor.name}
               </Typography>
               <Typography>
                 {userType === UserType.Doctor
-                  ? appointment.countAppointments + 'ª consulta'
-                  : appointment.specialty}
+                  ? appointment.appointments_count + 'ª consulta'
+                  : appointment.doctor.specialty.name}
               </Typography>
             </Box>
 
             <Typography>
-              {appointment.date} às {appointment.time}
+              {appointment.consultation_date} às {appointment.consultation_time}
             </Typography>
           </CardContent>
 
@@ -89,19 +86,27 @@ function AppointmentCard({
           Você não tem consultas agendadas.
         </Typography>
       )}
+      {appointment && hasActions && onUpdateAppointments && showToast ? (
+        <>
+          <DeleteAppointmentDialog
+            open={openDeleteModal}
+            onClose={handleDeleteClose}
+            appointmentId={appointment.id}
+            onUpdateAppointments={onUpdateAppointments}
+            showToast={showToast}
+          />
 
-      <DeleteAppointmentDialog
-        open={openDeleteModal}
-        onClose={handleDeleteClose}
-        onConfirm={handleDeleteConfirm}
-      />
-
-      <EditAppointmentDialog
-        open={openEditModal}
-        onClose={handleEditClose}
-        appointment={appointment}
-        onEditConfirm={handleEditConfirm}
-      />
+          <EditAppointmentDialog
+            open={openEditModal}
+            onClose={handleEditClose}
+            appointment={appointment}
+            onUpdateAppointments={onUpdateAppointments}
+            showToast={showToast}
+          />
+        </>
+      ) : (
+        ''
+      )}
     </Card>
   );
 }

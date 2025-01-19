@@ -1,44 +1,87 @@
 import { Box, Typography } from '@mui/material';
 import dayjs, { Dayjs } from 'dayjs';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { AppointmentService } from '../../api/services/AppointmentService';
 import AppointmentCard from '../../components/atoms/AppointmentCard';
+import Toast from '../../components/atoms/Toast';
 import AppointmentFilters from '../../components/molecules/AppointmentsFilters';
+import LoadingScreen from '../../components/organisms/LoadingScreen';
+import { useAuthContext } from '../../context/AuthContext';
+import { Appointment, UserType } from '../../utils/types';
 import './style.scss';
 
 function Appointments() {
-  const appointments = [
-    {
-      date: '2025-01-20',
-      time: '14:00',
-      doctor: 'Dra. Maria Clara',
-      specialty: 'Cardiologia',
-      patient: 'John Doe',
-      countAppointments: 1,
-    },
-    {
-      date: '2024-12-15',
-      time: '16:00',
-      doctor: 'Dr. Roberto Silva',
-      specialty: 'Endocrinologia',
-      patient: 'Richard Tomas',
-      countAppointments: 3,
-    },
-  ];
+  const [appointments, setAppointments] = useState<Appointment[]>([]);
+  const { user } = useAuthContext();
 
   const [filters, setFilters] = useState({
     dateRange: [null, null] as [Dayjs | null, Dayjs | null],
     name: '',
     specialty: '',
+    crm: '',
   });
 
-  const userType = 'patient';
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string>('');
+
+  const [toast, setToast] = useState({
+    open: false,
+    message: '',
+    severity: 'success' as 'success' | 'error' | 'info' | 'warning',
+  });
+
+  const showToast = (
+    message: string,
+    severity: 'success' | 'error' | 'info' | 'warning'
+  ) => {
+    setToast({ open: true, message, severity });
+  };
+
+  const closeToast = () => {
+    setToast({ ...toast, open: false });
+  };
+
+  useEffect(() => {
+    if (user) {
+      setLoading(true);
+      AppointmentService.getAppointments(user.id)
+        .then((appointmentsData) => {
+          setAppointments(appointmentsData);
+        })
+        .catch((error) => {
+          setError(`Erro ao carregar os agendamentos: ${error}`);
+          console.error('Erro ao carregar agendamentos:', error);
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+    }
+  }, [user]);
+
+  const updateAppointments = () => {
+    if (user) {
+      setLoading(true);
+      AppointmentService.getAppointments(user.id)
+        .then((appointmentsData) => {
+          setAppointments(appointmentsData);
+        })
+        .catch((error) => {
+          setError(`Erro ao carregar os agendamentos: ${error}`);
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+    }
+  };
 
   const filteredAppointments = appointments.filter((appointment) => {
     const { dateRange, name, specialty } = filters;
     const patientOrDoctorName =
-      userType === 'doctor' ? appointment.patient : appointment.doctor;
+      user?.type === UserType.Doctor
+        ? appointment.patient.name
+        : appointment.doctor.name;
 
-    const appointmentDate = dayjs(appointment.date);
+    const appointmentDate = dayjs(appointment.consultation_date);
 
     const startDate = dateRange[0]?.startOf('day');
     const endDate = dateRange[1]?.endOf('day');
@@ -54,7 +97,9 @@ function Appointments() {
         ? patientOrDoctorName.toLowerCase().includes(name.toLowerCase())
         : true) &&
       (specialty
-        ? appointment.specialty.toLowerCase().includes(specialty.toLowerCase())
+        ? `${appointment.doctor.specialty.id}`
+            .toLowerCase()
+            .includes(`${specialty}`.toLowerCase())
         : true)
     );
   });
@@ -68,8 +113,13 @@ function Appointments() {
       dateRange: [null, null],
       name: '',
       specialty: '',
+      crm: '',
     });
   };
+
+  if (loading || !user) {
+    return <LoadingScreen />;
+  }
 
   return (
     <Box className="appointments">
@@ -78,7 +128,7 @@ function Appointments() {
       </Typography>
 
       <AppointmentFilters
-        userType={userType}
+        userType={user.type}
         filters={filters}
         onFilterChange={handleFilterChange}
         onClearFilters={handleClearFilters}
@@ -90,16 +140,24 @@ function Appointments() {
             <AppointmentCard
               key={index}
               appointment={appointment}
-              userType={userType}
-              hasActions={userType == 'patient'}
+              userType={user.type}
+              hasActions={user.type === UserType.Patient}
+              onUpdateAppointments={updateAppointments}
+              showToast={showToast}
             />
           ))
         ) : (
           <Typography className="empty">
-            Não há agendamentos para mostrar.
+            {error ? error : 'Não há agendamentos para mostrar.'}
           </Typography>
         )}
       </Box>
+      <Toast
+        open={toast.open}
+        message={toast.message}
+        severity={toast.severity}
+        onClose={closeToast}
+      />
     </Box>
   );
 }

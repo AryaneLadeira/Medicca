@@ -1,7 +1,8 @@
 import { TextField } from '@mui/material';
+import { UserType } from '../../../utils/types';
 
 interface NameFilterProps {
-  userType: string;
+  userType: UserType;
   value: string;
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
@@ -9,7 +10,7 @@ interface NameFilterProps {
 function NameFilter({ userType, value, onChange }: NameFilterProps) {
   return (
     <TextField
-      label={userType === 'doctor' ? 'Paciente' : 'Médico'}
+      label={userType === UserType.Doctor ? 'Paciente' : 'Médico'}
       value={value}
       onChange={onChange}
       sx={{ flex: 1, minWidth: '250px' }}

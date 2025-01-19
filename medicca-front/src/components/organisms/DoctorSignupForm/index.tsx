@@ -1,15 +1,14 @@
-import { Box, Button, MenuItem, TextField } from '@mui/material';
-import { useEffect, useState } from 'react';
+import { Box, Button, TextField } from '@mui/material';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDoctorsContext } from '../../../context/DoctorsContext';
-import { useSpecialitiesContext } from '../../../context/SpecialitiesContext';
-import { Speciality } from '../../../utils/types';
 import CepField from '../../atoms/CepField';
 import CpfField from '../../atoms/CpfField';
 import CrmField from '../../atoms/CrmField';
 import PasswordField from '../../atoms/PasswordField';
 import PhoneField from '../../atoms/PhoneField';
 import Toast from '../../atoms/Toast';
+import SpecialityFilter from '../../molecules/SpecialtyFilter';
 import './style.scss';
 
 function DoctorSignupForm() {
@@ -26,9 +25,7 @@ function DoctorSignupForm() {
     phone: '',
   });
 
-  const { getSpecialities } = useSpecialitiesContext();
   const { createNewDoctor } = useDoctorsContext();
-  const [specialities, setSpecialities] = useState<Speciality[]>([]);
   const [toastOpen, setToastOpen] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
   const [toastSeverity, setToastSeverity] = useState<'success' | 'error'>(
@@ -36,15 +33,6 @@ function DoctorSignupForm() {
   );
 
   const navigate = useNavigate();
-
-  useEffect(() => {
-    const fetchSpecialities = async () => {
-      const data = await getSpecialities();
-      setSpecialities(data);
-    };
-    fetchSpecialities();
-  }, [getSpecialities]);
-
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
@@ -157,21 +145,12 @@ function DoctorSignupForm() {
           value={formData.crm}
         />
 
-        <TextField
-          label="Especialidade"
-          name="speciality_id"
+        <SpecialityFilter
           value={formData.speciality_id}
-          onChange={handleChange}
-          fullWidth
-          required
-          select
-        >
-          {specialities.map((speciality) => (
-            <MenuItem key={speciality.id} value={speciality.id}>
-              {speciality.name}
-            </MenuItem>
-          ))}
-        </TextField>
+          onChange={(specialty) =>
+            setFormData((prev) => ({ ...prev, speciality_id: specialty }))
+          }
+        />
 
         <Button
           type="submit"

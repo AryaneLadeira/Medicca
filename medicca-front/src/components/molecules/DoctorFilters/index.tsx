@@ -1,9 +1,11 @@
 import { Box } from '@mui/material';
 import { useEffect, useState } from 'react';
+import { useAuthContext } from '../../../context/AuthContext';
 import { DoctorData } from '../../../utils/types';
 import ClearFiltersButton from '../ClearFiltersButton';
+import CrmFilter from '../CrmFilter';
 import NameFilter from '../NameFilter';
-import SpecialtyFilter from '../SpecialtyFilter';
+import SpecialtySelectFilter from '../SpecialtyFilter';
 
 interface DoctorFiltersProps {
   doctors: DoctorData[];
@@ -14,20 +16,23 @@ function DoctorFilters({ doctors, setFilteredDoctors }: DoctorFiltersProps) {
   const [filters, setFilters] = useState({
     name: '',
     specialty: '',
+    crm: '',
   });
 
-  const { name, specialty } = filters;
+  const { name, specialty, crm } = filters;
+  const { user } = useAuthContext();
 
   const applyFilters = () => {
     const filtered = doctors.filter((doctor) => {
       const matchesName = doctor.name
         .toLowerCase()
         .includes(name.toLowerCase());
-      const matchesSpecialty = doctor.specialty.name
+      const matchesSpecialty = `${doctor.specialty.id}`
         .toLowerCase()
-        .includes(specialty.toLowerCase());
+        .includes(`${specialty}`.toLowerCase());
+      const matchesCrm = doctor.crm.includes(crm);
 
-      return matchesName && matchesSpecialty;
+      return matchesName && matchesSpecialty && matchesCrm;
     });
 
     setFilteredDoctors(filtered);
@@ -46,10 +51,11 @@ function DoctorFilters({ doctors, setFilteredDoctors }: DoctorFiltersProps) {
     setFilters({
       name: '',
       specialty: '',
+      crm: '',
     });
   };
 
-  const hasFiltersApplied = () => name !== '' || specialty !== '';
+  const hasFiltersApplied = () => name !== '' || specialty !== '' || crm !== '';
 
   return (
     <Box
@@ -59,14 +65,23 @@ function DoctorFilters({ doctors, setFilteredDoctors }: DoctorFiltersProps) {
       width="100%"
       alignItems="center"
     >
-      <NameFilter
-        userType={'patient'}
-        value={name}
-        onChange={(e) => handleFilterChange('name', e.target.value)}
-      />
-      <SpecialtyFilter
+      {user ? (
+        <NameFilter
+          userType={user?.type}
+          value={name}
+          onChange={(e) => handleFilterChange('name', e.target.value)}
+        />
+      ) : (
+        ''
+      )}
+
+      <SpecialtySelectFilter
         value={specialty}
-        onChange={(e) => handleFilterChange('specialty', e.target.value)}
+        onChange={(value) => handleFilterChange('specialty', value)}
+      />
+      <CrmFilter
+        value={crm}
+        onChange={(e) => handleFilterChange('crm', e.target.value)}
       />
       <ClearFiltersButton
         onClick={handleClearFilters}

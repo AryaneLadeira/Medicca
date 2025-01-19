@@ -12,6 +12,7 @@ import {
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuthContext } from '../../../context/AuthContext';
+import { UserType } from '../../../utils/types';
 import Toast from '../../atoms/Toast';
 import LoadingScreen from '../../organisms/LoadingScreen';
 import './style.scss';
@@ -25,10 +26,9 @@ interface MenuItemType {
 }
 
 function MenuComponent() {
-  const userType = 'patient';
   const navigate = useNavigate();
   const { logout, getToken } = useAuthContext();
-
+  const { user } = useAuthContext();
   const [toastOpen, setToastOpen] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
   const [toastSeverity, setToastSeverity] = useState<'success' | 'error'>(
@@ -70,7 +70,7 @@ function MenuComponent() {
     },
   ];
 
-  if (userType === 'patient') {
+  if (user?.type === UserType.Patient) {
     const index = menuItems.findIndex((item) => item.text === 'Sair');
     menuItems.splice(index, 0, {
       text: 'Médicos',

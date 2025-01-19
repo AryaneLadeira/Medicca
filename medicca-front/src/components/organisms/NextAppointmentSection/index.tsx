@@ -13,20 +13,25 @@ function NextAppointmentSection({
   userType,
 }: NextAppointmentSectionProps) {
   return (
-    <Box className="next-appointment">
-      <Typography variant="h3" className="subtitle">
-        Sua próxima consulta
-      </Typography>
-      <Box className="mobile-center">
-        {nextAppointment ? (
-          <AppointmentCard appointment={nextAppointment} userType={userType} />
-        ) : (
-          <Typography className="without-appointment">
-            Você não tem consultas agendadas.
-          </Typography>
-        )}
+    <>
+      <Box className="next-appointment">
+        <Typography variant="h3" className="subtitle">
+          Sua próxima consulta
+        </Typography>
+        <Box className="mobile-center">
+          {nextAppointment ? (
+            <AppointmentCard
+              appointment={nextAppointment}
+              userType={userType}
+            />
+          ) : (
+            <Typography className="without-appointment">
+              Você não tem consultas agendadas.
+            </Typography>
+          )}
+        </Box>
       </Box>
-    </Box>
+    </>
   );
 }
 

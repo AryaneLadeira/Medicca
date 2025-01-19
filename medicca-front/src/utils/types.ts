@@ -1,11 +1,3 @@
-export interface Appointment {
-  doctor: string;
-  patient: string;
-  specialty: string;
-  countAppointments: number;
-  time: string;
-  date: string;
-}
 export interface DoctorSignup {
   name: string;
   cpf: string;
@@ -123,4 +115,24 @@ export interface DecodedToken extends User {
   iss: string;
   nbf: number;
   prv: string;
+}
+
+export interface Appointment {
+  id: number;
+  consultation_date: string;
+  consultation_time: string;
+  appointments_count: number;
+  doctor: {
+    id: number;
+    name: string;
+    crm: string;
+    specialty: {
+      id: number;
+      name: string;
+    };
+  };
+  patient: {
+    id: number;
+    name: string;
+  };
 }

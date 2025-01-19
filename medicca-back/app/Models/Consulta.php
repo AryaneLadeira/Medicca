@@ -9,7 +9,7 @@ class Consulta extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['paciente_id', 'medico_id', 'data_consulta', 'data_agendamento'];
+    protected $fillable = ['paciente_id', 'medico_id', 'consultation_date', 'appointment_date'];
 
     public function paciente()
     {

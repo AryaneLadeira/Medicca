@@ -14,15 +14,14 @@ function Sidebar() {
   const toggleDrawer = () => {
     setIsOpen(!isOpen);
   };
-  const user = {
-    name: 'John Doe',
-    avatar: 'https://www.w3schools.com/howto/img_avatar.png',
-  };
 
   return (
     <>
       {isSmallScreen && !isOpen && (
-        <MobileTopBar onMenuClick={toggleDrawer} avatar={user.avatar} />
+        <MobileTopBar
+          onMenuClick={toggleDrawer}
+          avatar={'https://www.w3schools.com/howto/img_avatar.png'}
+        />
       )}
 
       <Drawer

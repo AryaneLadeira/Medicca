@@ -1,13 +1,13 @@
 import { Box, Typography } from '@mui/material';
 import { Pagination } from 'swiper/modules';
 import { Swiper as SwiperReact, SwiperSlide } from 'swiper/react';
-import { Appointment } from '../../../utils/types';
+import { Appointment, UserType } from '../../../utils/types';
 import AppointmentCard from '../../atoms/AppointmentCard';
 import './style.scss';
 
 interface CardCarouselProps {
   appointments: Appointment[];
-  userType: 'doctor' | 'patient';
+  userType: UserType;
 }
 
 function CardCarousel({ appointments, userType }: CardCarouselProps) {
