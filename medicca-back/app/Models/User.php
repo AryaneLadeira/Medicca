@@ -50,7 +50,7 @@ class User extends Authenticatable implements JWTSubject
         ];
     }
 
-    public function type()
+    public function getUserType()
     {
         if ($this->medico) {
             return 'medico';
@@ -62,6 +62,7 @@ class User extends Authenticatable implements JWTSubject
 
         return 'desconhecido';
     }
+
 
     public function medico()
     {
@@ -80,7 +81,7 @@ class User extends Authenticatable implements JWTSubject
 
     public function getJWTCustomClaims()
     {
-        $type = $this->type();
+        $type = $this->getUserType();
 
         $specificId = null;
         $birthDate = null;

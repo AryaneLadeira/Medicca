@@ -49,12 +49,12 @@ class ConsultaController extends Controller
 
     private function isPaciente($user)
     {
-        return $user->type() == 'paciente';
+        return $user->getUserType() == 'paciente';
     }
 
     private function isMedico($user)
     {
-        return $user->type() == 'medico';
+        return $user->getUserType() == 'medico';
     }
 
     private function filterConsultasByPaciente($query, $user)
@@ -294,20 +294,20 @@ class ConsultaController extends Controller
         $user = User::findOrFail($userId);
 
         $nextAppointment = Consulta::where('consultation_date', '>=', now())
-            ->when($user->type() == 'paciente', function ($query) use ($user) {
+            ->when($user->getUserType() == 'paciente', function ($query) use ($user) {
                 return $query->where('paciente_id', $user->paciente->id);
             })
-            ->when($user->type() == 'medico', function ($query) use ($user) {
+            ->when($user->getUserType() == 'medico', function ($query) use ($user) {
                 return $query->where('medico_id', $user->medico->id);
             })
             ->orderBy('consultation_date', 'asc')
             ->first();
 
         $pastAppointments = Consulta::where('consultation_date', '<', now())
-            ->when($user->type() == 'paciente', function ($query) use ($user) {
+            ->when($user->getUserType() == 'paciente', function ($query) use ($user) {
                 return $query->where('paciente_id', $user->paciente->id);
             })
-            ->when($user->type() == 'medico', function ($query) use ($user) {
+            ->when($user->getUserType() == 'medico', function ($query) use ($user) {
                 return $query->where('medico_id', $user->medico->id);
             })
             ->orderBy('consultation_date', 'desc')
