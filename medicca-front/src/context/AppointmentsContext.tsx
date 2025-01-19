@@ -14,6 +14,7 @@ interface AppointmentsContextProps {
     pastAppointments: Appointment[];
   }>;
   deleteAppointment: (appointmentId: number) => Promise<void>;
+  updateAppointment: (appointment: Appointment) => Promise<void>;
 }
 
 export const AppointmentsContext = createContext<

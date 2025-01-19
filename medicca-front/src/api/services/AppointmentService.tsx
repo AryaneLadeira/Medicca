@@ -74,4 +74,23 @@ export const AppointmentService = {
       throw new Error(errorData.message || 'Erro ao excluir consulta');
     }
   },
+  updateAppointment: async (appointment: Appointment): Promise<void> => {
+    const payload = {
+      consultation_date: `${appointment.consultation_date} ${appointment.consultation_time}`,
+    };
+  
+    const response = await fetch(`${API_URL}/consultas/${appointment.id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(payload),
+    });
+  
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || 'Erro ao atualizar consulta');
+    }
+  },
+  
 };

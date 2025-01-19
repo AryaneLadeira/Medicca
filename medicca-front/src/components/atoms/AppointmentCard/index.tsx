@@ -44,11 +44,6 @@ function AppointmentCard({
     setOpenEditModal(false);
   };
 
-  const handleEditConfirm = (updatedAppointment: Appointment) => {
-    console.log('Agendamento editado:', updatedAppointment);
-    setOpenEditModal(false);
-  };
-
   return (
     <Card
       className={`appointment-card ${
@@ -105,7 +100,8 @@ function AppointmentCard({
             open={openEditModal}
             onClose={handleEditClose}
             appointment={appointment}
-            onEditConfirm={handleEditConfirm}
+            onUpdateAppointments={onUpdateAppointments}
+            showToast={showToast}
           />
         </>
       ) : (

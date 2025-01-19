@@ -36,6 +36,10 @@ export const AppointmentsProvider = ({
     return await AppointmentService.deleteAppointment(appointmentId);
   };
 
+  const updateAppointment = async (appointment: Appointment): Promise<void> => {
+    return await AppointmentService.updateAppointment(appointment);
+  };
+
   return (
     <AppointmentsContext.Provider
       value={{
@@ -43,6 +47,7 @@ export const AppointmentsProvider = ({
         getAppointments,
         getAppointmentsSummary,
         deleteAppointment,
+        updateAppointment
       }}
     >
       {children}

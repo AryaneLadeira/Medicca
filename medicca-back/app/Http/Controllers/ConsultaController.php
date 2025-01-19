@@ -144,20 +144,31 @@ class ConsultaController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $id)
     {
-        $consulta = Consulta::findOrFail($id);
+        try {
+            $consulta = Consulta::findOrFail($id);
+            $validatedData = $request->validate([
+                'consultation_date' => 'required|date_format:Y-m-d H:i',
+            ]);
 
-        $validated = $request->validate([
-            'paciente_id' => 'nullable|exists:pacientes,id',
-            'medico_id' => 'nullable|exists:medicos,id',
-            'consultation_date' => 'nullable|date',
-            'appointment_date' => 'nullable|date',
-        ]);
+            $consulta->consultation_date = $validatedData['consultation_date'];
+            $consulta->save();
 
-        $consulta->update($validated);
-        return response()->json($consulta);
+            return response()->json([
+                'message' => 'Consulta atualizada com sucesso!',
+                'consulta' => $consulta,
+            ], 200);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'error' => 'Erro ao atualizar consulta.',
+                'message' => $e->getMessage(),
+            ], 500);
+        }
     }
+
+
 
     /**
      * Remove the specified resource from storage.
