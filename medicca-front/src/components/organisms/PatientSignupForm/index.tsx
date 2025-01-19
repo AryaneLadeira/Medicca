@@ -22,6 +22,7 @@ function PatientSignupForm() {
     address: '',
     number: '',
     phone: '',
+    birth_date: '',
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -51,6 +52,7 @@ function PatientSignupForm() {
       address: '',
       number: '',
       phone: '',
+      birth_date: '',
     });
   };
 
@@ -145,6 +147,19 @@ function PatientSignupForm() {
         <PhoneField
           value={formData.phone}
           onChange={(phone) => setFormData((prev) => ({ ...prev, phone }))}
+        />
+
+        <TextField
+          label="Data de Nascimento"
+          name="birth_date"
+          type="date"
+          value={formData.birth_date}
+          onChange={handleChange}
+          fullWidth
+          required
+          InputLabelProps={{
+            shrink: true,
+          }}
         />
 
         <Button

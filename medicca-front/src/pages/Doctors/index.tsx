@@ -3,12 +3,15 @@ import { useEffect, useState } from 'react';
 import DoctorCard from '../../components/atoms/DoctorCard';
 import DoctorFilters from '../../components/molecules/DoctorFilters';
 import LoadingScreen from '../../components/organisms/LoadingScreen';
+import { useAuthContext } from '../../context/AuthContext';
 import { useDoctorsContext } from '../../context/DoctorsContext';
 import { DoctorData } from '../../utils/types';
 import './style.scss';
+import { isUnder18 } from '../../utils/functions';
 
 function Doctors() {
   const { getDoctors } = useDoctorsContext();
+  const { user } = useAuthContext();
   const [doctors, setDoctors] = useState<DoctorData[]>([]);
   const [filteredDoctors, setFilteredDoctors] = useState<DoctorData[]>([]);
   const [loading, setLoading] = useState(false);
@@ -27,13 +30,22 @@ function Doctors() {
 
   useEffect(() => {
     setLoading(true);
-
     fetchDoctors();
   }, [getDoctors]);
 
+  useEffect(() => {
+    if (user) {
+      const isUserUnder18 = isUnder18(user);
+      const filtered = isUserUnder18
+        ? doctors.filter((doctor) => doctor.specialty.name === 'Pediatria')
+        : doctors;
+      setFilteredDoctors(filtered);
+    }
+  }, [user, doctors]);
+
   return (
     <>
-      {loading && <LoadingScreen />}{' '}
+      {loading && <LoadingScreen />}
       <Box className="doctors-container">
         <Typography variant="h3" className="subtitle">
           Médicos disponíveis

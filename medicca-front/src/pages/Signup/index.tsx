@@ -1,9 +1,10 @@
 import { Box, Container, Grid2 } from '@mui/material';
 import { useState } from 'react';
 import LoginHeader from '../../components/atoms/FormHeader';
+import LoginLink from '../../components/atoms/LoginLink';
+import SignupImageSlider from '../../components/molecules/SignupImageSlider';
 import SlideForm from '../../components/organisms/SlideForm';
 import './style.scss';
-import SignupImageSlider from '../../components/molecules/SignupImageSlider';
 
 function Signup() {
   const [isPatient, setIsPatient] = useState(true);
@@ -22,6 +23,7 @@ function Signup() {
                 title="Crie sua conta!"
                 subtitle="Preencha os campos abaixo"
               />
+              <LoginLink />
               <SlideForm isPatient={isPatient} setIsPatient={setIsPatient} />
             </Box>
           </Grid2>

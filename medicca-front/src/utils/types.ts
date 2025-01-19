@@ -44,6 +44,7 @@ export interface Patient {
   address: string;
   number: string;
   phone: string;
+  birth_date: string;
 }
 
 export interface PatientData {
@@ -55,6 +56,7 @@ export interface PatientData {
   address: string;
   phone: string;
   registration_date: string;
+  birth_date: string;
 }
 
 export interface CEPData {
@@ -105,6 +107,7 @@ export interface User {
   email: string;
   type: UserType;
   specificId: number;
+  birthDate: string;
 }
 
 export interface DecodedToken extends User {

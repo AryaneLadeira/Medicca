@@ -6,7 +6,7 @@ import {
   DialogTitle,
   TextField,
 } from '@mui/material';
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { AppointmentService } from '../../../api/services/AppointmentService';
 import { formatDateToYMD } from '../../../utils/format';
 import { Appointment } from '../../../utils/types';
@@ -30,6 +30,7 @@ function EditAppointmentDialog({
   onUpdateAppointments,
   showToast,
 }: EditModalProps) {
+  const [loading, setLoading] = useState(false);
   const [editedAppointment, setEditedAppointment] =
     useState<Appointment>(appointment);
 
@@ -51,12 +52,15 @@ function EditAppointmentDialog({
 
   const handleConfirm = async () => {
     try {
+      setLoading(true);
       await AppointmentService.updateAppointment(editedAppointment);
       showToast('Consulta atualizada com sucesso!', 'success');
       onUpdateAppointments();
       onClose();
     } catch (error) {
       showToast('Erro ao atualizar consulta ' + error, 'error');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -72,7 +76,6 @@ function EditAppointmentDialog({
               type="date"
               value={formattedDate}
               onChange={(e) => {
-                console.log('Input date change:', e.target.value);
                 handleEditChange('consultation_date', e.target.value);
               }}
               fullWidth
@@ -82,7 +85,9 @@ function EditAppointmentDialog({
               label="Hora"
               type="time"
               value={editedAppointment.consultation_time}
-              onChange={(e) => handleEditChange('consultation_time', e.target.value)}
+              onChange={(e) =>
+                handleEditChange('consultation_time', e.target.value)
+              }
               fullWidth
               margin="normal"
             />
@@ -95,6 +100,7 @@ function EditAppointmentDialog({
           color="error"
           className="dialog-btn"
           variant="contained"
+          disabled={loading}
         >
           Cancelar
         </Button>
@@ -103,8 +109,9 @@ function EditAppointmentDialog({
           color="secondary"
           className="dialog-btn"
           variant="contained"
+          disabled={loading}
         >
-          Editar
+          {loading ? 'Aguarde...' : 'Editar'}
         </Button>
       </DialogActions>
     </Dialog>
