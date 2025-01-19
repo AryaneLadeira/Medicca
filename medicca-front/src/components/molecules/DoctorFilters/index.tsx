@@ -4,7 +4,7 @@ import { DoctorData } from '../../../utils/types';
 import ClearFiltersButton from '../ClearFiltersButton';
 import CrmFilter from '../CrmFilter';
 import NameFilter from '../NameFilter';
-import SpecialtyFilter from '../SpecialtyFilter';
+import SpecialtySelectFilter from '../SpecialtyFilter';
 
 interface DoctorFiltersProps {
   doctors: DoctorData[];
@@ -25,9 +25,9 @@ function DoctorFilters({ doctors, setFilteredDoctors }: DoctorFiltersProps) {
       const matchesName = doctor.name
         .toLowerCase()
         .includes(name.toLowerCase());
-      const matchesSpecialty = doctor.specialty.name
+      const matchesSpecialty = `${doctor.specialty.id}`
         .toLowerCase()
-        .includes(specialty.toLowerCase());
+        .includes(`${specialty}`.toLowerCase());
       const matchesCrm = doctor.crm.includes(crm);
 
       return matchesName && matchesSpecialty && matchesCrm;
@@ -68,9 +68,9 @@ function DoctorFilters({ doctors, setFilteredDoctors }: DoctorFiltersProps) {
         value={name}
         onChange={(e) => handleFilterChange('name', e.target.value)}
       />
-      <SpecialtyFilter
+      <SpecialtySelectFilter
         value={specialty}
-        onChange={(e) => handleFilterChange('specialty', e.target.value)}
+        onChange={(value) => handleFilterChange('specialty', value)}
       />
       <CrmFilter
         value={crm}

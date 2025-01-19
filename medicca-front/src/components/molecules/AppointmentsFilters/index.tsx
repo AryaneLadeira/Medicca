@@ -5,7 +5,7 @@ import ClearFiltersButton from '../ClearFiltersButton';
 import CrmFilter from '../CrmFilter';
 import DateRangeFilter from '../DateRangeFilter';
 import NameFilter from '../NameFilter';
-import SpecialtyFilter from '../SpecialtyFilter';
+import SpecialityFilter from '../SpecialtyFilter';
 import './style.scss';
 
 interface AppointmentFiltersProps {
@@ -53,9 +53,9 @@ function AppointmentFilters({
 
       {userType === UserType.Patient && (
         <>
-          <SpecialtyFilter
+          <SpecialityFilter
             value={specialty}
-            onChange={(e) => onFilterChange('specialty', e.target.value)}
+            onChange={(value) => onFilterChange('specialty', value)}
           />
           <CrmFilter
             value={crm}

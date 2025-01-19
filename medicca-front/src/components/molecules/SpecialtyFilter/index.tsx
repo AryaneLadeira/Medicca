@@ -5,27 +5,56 @@ import {
   Select,
   SelectChangeEvent,
 } from '@mui/material';
+import { useEffect, useState } from 'react';
+import { useSpecialitiesContext } from '../../../context/SpecialitiesContext';
+import { Speciality } from '../../../utils/types';
+import LoadingScreen from '../../organisms/LoadingScreen';
+import './style.scss';
 
-interface SpecialtyFilterProps {
+interface SpecialtySelectFilterProps {
   value: string;
-  onChange: (e: SelectChangeEvent<string>) => void;
+  onChange: (value: string) => void;
 }
 
-function SpecialtyFilter({ value, onChange }: SpecialtyFilterProps) {
+function SpecialtySelectFilter({
+  value,
+  onChange,
+}: SpecialtySelectFilterProps) {
+  const { getSpecialities } = useSpecialitiesContext();
+  const [specialities, setSpecialities] = useState<Speciality[]>([]);
+  
+  const fetchSpecialities = async () => {
+    const data = await getSpecialities();
+    setSpecialities(data);
+  };
+
+  useEffect(() => {
+    fetchSpecialities();
+  }, [getSpecialities]);
+
+  if (!specialities.length) {
+    return <LoadingScreen />;
+  }
+
   return (
     <FormControl sx={{ flex: 1, minWidth: '250px' }}>
       <InputLabel>Especialidade</InputLabel>
-      <Select label="Especialidade" value={value} onChange={onChange}>
+      <Select
+        label="Especialidade"
+        value={value}
+        onChange={(e: SelectChangeEvent<string>) => onChange(e.target.value)}
+      >
         <MenuItem value="">
-          <em>Todas</em>
+          <em>Selecione uma especialidade</em>
         </MenuItem>
-        <MenuItem value="Cardiologia">Cardiologia</MenuItem>
-        <MenuItem value="Endocrinologia">Endocrinologia</MenuItem>
-        <MenuItem value="Pediatria">Pediatria</MenuItem>
-        <MenuItem value="Dermatologia">Dermatologia</MenuItem>
+        {specialities.map((speciality) => (
+          <MenuItem key={speciality.id} value={speciality.id}>
+            {speciality.name}
+          </MenuItem>
+        ))}
       </Select>
     </FormControl>
   );
 }
 
-export default SpecialtyFilter;
+export default SpecialtySelectFilter;

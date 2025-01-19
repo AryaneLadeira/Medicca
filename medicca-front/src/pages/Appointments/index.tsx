@@ -63,9 +63,9 @@ function Appointments() {
         ? patientOrDoctorName.toLowerCase().includes(name.toLowerCase())
         : true) &&
       (specialty
-        ? appointment.doctor.specialty.name
+        ? `${appointment.doctor.specialty.id}`
             .toLowerCase()
-            .includes(specialty.toLowerCase())
+            .includes(`${specialty}`.toLowerCase())
         : true)
     );
   });
