@@ -1,7 +1,8 @@
-import { Box, TextField } from '@mui/material';
+import { Box } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { DoctorData } from '../../../utils/types';
 import ClearFiltersButton from '../ClearFiltersButton';
+import CrmFilter from '../CrmFilter';
 import NameFilter from '../NameFilter';
 import SpecialtyFilter from '../SpecialtyFilter';
 
@@ -71,8 +72,7 @@ function DoctorFilters({ doctors, setFilteredDoctors }: DoctorFiltersProps) {
         value={specialty}
         onChange={(e) => handleFilterChange('specialty', e.target.value)}
       />
-      <TextField
-        label="CRM"
+      <CrmFilter
         value={crm}
         onChange={(e) => handleFilterChange('crm', e.target.value)}
       />

@@ -1,17 +1,20 @@
 import { Box } from '@mui/material';
 import { Dayjs } from 'dayjs';
-import NameFilter from '../NameFilter';
-import DateRangeFilter from '../DateRangeFilter';
-import SpecialtyFilter from '../SpecialtyFilter';
+import { UserType } from '../../../utils/types';
 import ClearFiltersButton from '../ClearFiltersButton';
+import CrmFilter from '../CrmFilter';
+import DateRangeFilter from '../DateRangeFilter';
+import NameFilter from '../NameFilter';
+import SpecialtyFilter from '../SpecialtyFilter';
 import './style.scss';
 
 interface AppointmentFiltersProps {
-  userType: string;
+  userType: UserType;
   filters: {
     dateRange: [Dayjs | null, Dayjs | null];
     name: string;
     specialty: string;
+    crm: string;
   };
   onFilterChange: (field: string, value: unknown) => void;
   onClearFilters: () => void;
@@ -23,11 +26,12 @@ function AppointmentFilters({
   onFilterChange,
   onClearFilters,
 }: AppointmentFiltersProps) {
-  const { name, specialty, dateRange } = filters;
+  const { name, specialty, crm, dateRange } = filters;
 
   const hasFiltersApplied = () => {
     return (
       name !== '' ||
+      crm !== '' ||
       specialty !== '' ||
       dateRange[0] !== null ||
       dateRange[1] !== null
@@ -41,16 +45,25 @@ function AppointmentFilters({
         value={name}
         onChange={(e) => onFilterChange('name', e.target.value)}
       />
+
       <DateRangeFilter
         value={dateRange}
         onChange={(newValue) => onFilterChange('dateRange', newValue)}
       />
-      {userType !== 'patient' ? null : (
-        <SpecialtyFilter
-          value={specialty}
-          onChange={(e) => onFilterChange('specialty', e.target.value)}
-        />
+
+      {userType === UserType.Patient && (
+        <>
+          <SpecialtyFilter
+            value={specialty}
+            onChange={(e) => onFilterChange('specialty', e.target.value)}
+          />
+          <CrmFilter
+            value={crm}
+            onChange={(e) => onFilterChange('crm', e.target.value)}
+          />
+        </>
       )}
+
       <ClearFiltersButton
         onClick={onClearFilters}
         disabled={!hasFiltersApplied()}

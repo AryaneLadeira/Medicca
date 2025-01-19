@@ -17,6 +17,7 @@ function Appointments() {
     dateRange: [null, null] as [Dayjs | null, Dayjs | null],
     name: '',
     specialty: '',
+    crm: '',
   });
 
   const [loading, setLoading] = useState<boolean>(true);
@@ -78,6 +79,7 @@ function Appointments() {
       dateRange: [null, null],
       name: '',
       specialty: '',
+      crm: '',
     });
   };
 
