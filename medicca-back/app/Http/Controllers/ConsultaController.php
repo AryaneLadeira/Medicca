@@ -7,6 +7,7 @@ use App\Models\Consulta;
 use App\Models\User;
 use App\Mail\AppointmentCreated;
 use App\Mail\AppointmentEdited;
+use App\Mail\AppointmentDeleted;
 use Illuminate\Support\Facades\Mail;
 use App\Models\Paciente;
 use App\Models\Medico;
@@ -254,10 +255,36 @@ class ConsultaController extends Controller
     /**
      * Remove the specified resource from storage.
      */
+
     public function destroy(string $id)
     {
-        $consulta = Consulta::findOrFail($id);
-        $consulta->delete();
-        return response()->json(['message' => 'Consulta deletada com sucesso']);
+        try {
+            $consulta = Consulta::findOrFail($id);
+
+            $paciente = $consulta->paciente;
+            $medico = $consulta->medico;
+            $appointmentDate = \Carbon\Carbon::parse($consulta->consultation_date)->format('d/m/Y H:i');
+
+            $consulta->delete();
+
+            Mail::to($paciente->user->email)->send(new AppointmentDeleted(
+                $paciente->user->name,
+                $medico->user->name,
+                $appointmentDate
+            ));
+            Mail::to($medico->user->email)->send(new AppointmentDeleted(
+                $paciente->user->name,
+                $medico->user->name,
+                $appointmentDate
+            ));
+
+            return response()->json(['message' => 'Consulta deletada com sucesso e e-mails enviados.']);
+        } catch (\Exception $e) {
+            return response()->json([
+                'error' => 'Erro ao deletar consulta.',
+                'message' => $e->getMessage(),
+            ], 500);
+        }
     }
+
 }
