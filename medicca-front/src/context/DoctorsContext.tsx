@@ -1,9 +1,10 @@
 import { createContext, useContext } from 'react';
-import { DoctorSignup, DoctorSignupData, DoctorData } from '../utils/types';
+import { Doctor, DoctorData, DoctorSignup, DoctorSignupData } from '../utils/types';
 
 interface DoctorsContextProps {
   createNewDoctor: (data: DoctorSignup) => Promise<DoctorSignupData | void>;
-  getDoctors: () => Promise<DoctorData[]>; // Função para buscar médicos
+  getDoctors: () => Promise<DoctorData[]>;
+  getDoctorById: (id: number) => Promise<Doctor>;
 }
 
 export const DoctorsContext = createContext<DoctorsContextProps | undefined>(

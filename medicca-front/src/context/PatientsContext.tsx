@@ -1,8 +1,9 @@
 import { createContext, useContext } from 'react';
-import { Patient, PatientData } from '../utils/types';
+import { NewPatient, Patient, PatientData } from '../utils/types';
 
 interface PatientsContextProps {
-  createNewPatient: (data: Patient) => Promise<PatientData | void>;
+  createNewPatient: (data: Patient) => Promise<NewPatient | void>;
+  getPatientById: (id: number) => Promise<PatientData>;
 }
 
 export const PatientsContext = createContext<PatientsContextProps | undefined>(

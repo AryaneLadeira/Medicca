@@ -1,5 +1,5 @@
 import { cleanString } from '../../utils/format';
-import { DoctorSignup, DoctorSignupData, DoctorData } from '../../utils/types';
+import { DoctorSignup, DoctorSignupData, DoctorData, Doctor } from '../../utils/types';
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -48,5 +48,14 @@ export const DoctorService = {
 
     const doctorsData = await response.json();
     return doctorsData;
+  },
+  getDoctorById: async (id: number): Promise<Doctor> => {
+    const response = await fetch(`${API_URL}/medicos/${id}`);
+    if (!response.ok) {
+      throw new Error('Erro ao buscar médico');
+    }
+
+    const doctorData = await response.json();
+    return doctorData;
   },
 };
