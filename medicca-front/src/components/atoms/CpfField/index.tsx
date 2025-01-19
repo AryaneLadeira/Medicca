@@ -1,4 +1,5 @@
 import { TextField } from '@mui/material';
+import { cpf } from 'cpf-cnpj-validator';
 import { useState } from 'react';
 import InputMask from 'react-input-mask';
 
@@ -16,9 +17,9 @@ function CpfField({ value, onChange }: CpfFieldProps) {
   };
 
   const validateCpf = () => {
-    const cleanedCpf = value.replace(/\D/g, ''); 
-    if (cleanedCpf.length !== 11) {
-      setError('CPF inválido. Certifique-se de inserir 11 dígitos.');
+    const cleanedCpf = value.replace(/\D/g, '');
+    if (cleanedCpf.length !== 11 || !cpf.isValid(cleanedCpf)) {
+      setError('CPF inválido. Certifique-se de inserir um CPF válido.');
     } else {
       setError('');
     }
