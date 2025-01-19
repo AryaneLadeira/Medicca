@@ -1,5 +1,6 @@
 import { Box } from '@mui/material';
 import { useEffect, useState } from 'react';
+import { useAuthContext } from '../../../context/AuthContext';
 import { DoctorData } from '../../../utils/types';
 import ClearFiltersButton from '../ClearFiltersButton';
 import CrmFilter from '../CrmFilter';
@@ -19,6 +20,7 @@ function DoctorFilters({ doctors, setFilteredDoctors }: DoctorFiltersProps) {
   });
 
   const { name, specialty, crm } = filters;
+  const { user } = useAuthContext();
 
   const applyFilters = () => {
     const filtered = doctors.filter((doctor) => {
@@ -63,11 +65,16 @@ function DoctorFilters({ doctors, setFilteredDoctors }: DoctorFiltersProps) {
       width="100%"
       alignItems="center"
     >
-      <NameFilter
-        userType={'patient'}
-        value={name}
-        onChange={(e) => handleFilterChange('name', e.target.value)}
-      />
+      {user ? (
+        <NameFilter
+          userType={user?.type}
+          value={name}
+          onChange={(e) => handleFilterChange('name', e.target.value)}
+        />
+      ) : (
+        ''
+      )}
+
       <SpecialtySelectFilter
         value={specialty}
         onChange={(value) => handleFilterChange('specialty', value)}
