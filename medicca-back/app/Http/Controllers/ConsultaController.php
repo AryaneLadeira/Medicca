@@ -5,6 +5,11 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Consulta;
 use App\Models\User;
+use App\Mail\AppointmentCreated;
+use Illuminate\Support\Facades\Mail;
+use App\Models\Paciente;
+use App\Models\Medico;
+
 
 class ConsultaController extends Controller
 {
@@ -112,27 +117,58 @@ class ConsultaController extends Controller
      */
     public function store(Request $request)
     {
-        $validated = $request->validate([
+        $validated = $this->validateRequest($request);
+        $consulta = $this->createConsulta($validated);
+        $this->sendAppointmentEmail($validated, $consulta);
+
+        return response()->json([
+            'message' => 'Consulta criada com sucesso e e-mail enviado!',
+            'consulta' => $consulta,
+        ], 201);
+    }
+
+    private function validateRequest(Request $request)
+    {
+        return $request->validate([
             'paciente_id' => 'required|exists:pacientes,id',
             'medico_id' => 'required|exists:medicos,id',
             'consultation_date' => 'required|date_format:Y-m-d H:i',
         ]);
+    }
 
+    private function createConsulta(array $validated)
+    {
         $appointmentDate = \Carbon\Carbon::now()->format('Y-m-d H:i');
 
-        // Criando a consulta com os dados validados
-        $consulta = Consulta::create([
+        return Consulta::create([
             'paciente_id' => $validated['paciente_id'],
             'medico_id' => $validated['medico_id'],
             'consultation_date' => $validated['consultation_date'],
             'appointment_date' => $appointmentDate,
         ]);
-
-        return response()->json([
-            'message' => 'Consulta criada com sucesso!',
-            'consulta' => $consulta,
-        ], 201);
     }
+
+    private function sendAppointmentEmail(array $validated, Consulta $consulta)
+    {
+        $paciente = Paciente::find($validated['paciente_id']);
+        $medico = Medico::find($validated['medico_id']);
+
+        $appointmentDate = \Carbon\Carbon::parse($consulta->consultation_date)->format('d/m/Y H:i');
+
+        Mail::to($paciente->user->email)->send(new AppointmentCreated(
+            $appointmentDate,
+            $paciente->user->name,
+            $medico->user->name
+        ));
+
+        Mail::to($medico->user->email)->send(new AppointmentCreated(
+            $appointmentDate,
+            $paciente->user->name,
+            $medico->user->name
+        ));
+    }
+
+
 
 
 
