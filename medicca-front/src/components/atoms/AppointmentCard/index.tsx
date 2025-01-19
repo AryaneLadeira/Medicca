@@ -60,18 +60,18 @@ function AppointmentCard({
             <Box className="card-name-container">
               <Typography variant="h5" className="card-name">
                 {userType === UserType.Doctor
-                  ? appointment.patient
-                  : appointment.doctor}
+                  ? appointment.patient.name
+                  : appointment.doctor.name}
               </Typography>
               <Typography>
                 {userType === UserType.Doctor
-                  ? appointment.countAppointments + 'ª consulta'
-                  : appointment.specialty}
+                  ? appointment.appointments_count + 'ª consulta'
+                  : appointment.doctor.specialty.name}
               </Typography>
             </Box>
 
             <Typography>
-              {appointment.date} às {appointment.time}
+              {appointment.consultation_date} às {appointment.consultation_time}
             </Typography>
           </CardContent>
 

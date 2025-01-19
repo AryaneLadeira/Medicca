@@ -1,3 +1,5 @@
+import { Appointment } from '../../utils/types';
+
 const API_URL = 'http://127.0.0.1:8000/api';
 
 export const AppointmentService = {
@@ -32,13 +34,33 @@ export const AppointmentService = {
     return await response.json();
   },
 
-  getAppointments: async (userId: number): Promise<any[]> => {
+  getAppointments: async (userId: number): Promise<Appointment[]> => {
     const response = await fetch(`${API_URL}/consultas?user_id=${userId}`);
 
     if (!response.ok) {
       throw new Error('Erro ao buscar consultas');
     }
-
     return await response.json();
+  },
+
+  getAppointmentsSummary: async (
+    userId: number
+  ): Promise<{
+    nextAppointment: Appointment;
+    pastAppointments: Appointment[];
+  }> => {
+    const response = await fetch(
+      `${API_URL}/consultas/detalhes?user_id=${userId}`
+    );
+
+    if (!response.ok) {
+      throw new Error('Erro ao buscar resumo de consultas');
+    }
+    const data = await response.json();
+
+    return {
+      nextAppointment: data.next_appointment,
+      pastAppointments: data.past_appointments,
+    };
   },
 };

@@ -1,5 +1,6 @@
 import { ReactNode } from 'react';
 import { AppointmentsContext } from '../../context/AppointmentsContext';
+import { Appointment } from '../../utils/types';
 import { AppointmentService } from '../services/AppointmentService';
 
 interface AppointmentsProviderProps {
@@ -18,13 +19,26 @@ export const AppointmentsProvider = ({
     return await AppointmentService.createAppointment(data);
   };
 
-  const getAppointments = async (userId: number): Promise<any[]> => {
+  const getAppointments = async (userId: number): Promise<Appointment[]> => {
     return await AppointmentService.getAppointments(userId);
+  };
+
+  const getAppointmentsSummary = async (
+    userId: number
+  ): Promise<{
+    nextAppointment: Appointment;
+    pastAppointments: Appointment[];
+  }> => {
+    return await AppointmentService.getAppointmentsSummary(userId);
   };
 
   return (
     <AppointmentsContext.Provider
-      value={{ createAppointment, getAppointments }}
+      value={{
+        createAppointment,
+        getAppointments,
+        getAppointmentsSummary,
+      }}
     >
       {children}
     </AppointmentsContext.Provider>

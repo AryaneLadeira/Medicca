@@ -1,4 +1,5 @@
 import { createContext, useContext } from 'react';
+import { Appointment } from '../utils/types';
 
 interface AppointmentsContextProps {
   createAppointment: (data: {
@@ -7,7 +8,11 @@ interface AppointmentsContextProps {
     consultation_date: string;
     consultation_time: string;
   }) => Promise<void>;
-  getAppointments: (userId: number) => Promise<any[]>;
+  getAppointments: (userId: number) => Promise<Appointment[]>;
+  getAppointmentsSummary: (userId: number) => Promise<{
+    nextAppointment: Appointment;
+    pastAppointments: Appointment[];
+  }>;
 }
 
 export const AppointmentsContext = createContext<

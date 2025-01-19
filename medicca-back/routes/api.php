@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
 
+Route::get('consultas/detalhes', [ConsultaController::class, 'appointmentsSummary']);
+
 Route::apiResource('consultas', ConsultaController::class);
 
 Route::apiResource('telefones', TelefoneController::class);

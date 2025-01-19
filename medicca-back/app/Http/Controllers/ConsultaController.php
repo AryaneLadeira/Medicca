@@ -16,7 +16,7 @@ class ConsultaController extends Controller
         $userId = $request->query('user_id');
         $user = User::findOrFail($userId);
 
-        $consultas = Consulta::with(['paciente', 'medico'])
+        $consultas = Consulta::with(['paciente.user', 'medico.user', 'medico.especialidade'])
             ->when($user->type() == 'paciente', function ($query) use ($user) {
                 return $query->where('paciente_id', $user->paciente->id);
             })
@@ -26,12 +26,84 @@ class ConsultaController extends Controller
             ->orderBy('consultation_date', 'desc')
             ->get();
 
-        return response()->json($consultas);
+        $appointmentData = $this->formatAppointments($consultas);
+
+        return response()->json($appointmentData);
+    }
+
+
+    public function appointmentsSummary(Request $request)
+    {
+        $userId = $request->query('user_id');
+        $limit = $request->query('limit', 10);
+        $user = User::findOrFail($userId);
+
+        $nextAppointment = Consulta::where('consultation_date', '>=', now())
+            ->when($user->type() == 'paciente', function ($query) use ($user) {
+                return $query->where('paciente_id', $user->paciente->id);
+            })
+            ->when($user->type() == 'medico', function ($query) use ($user) {
+                return $query->where('medico_id', $user->medico->id);
+            })
+            ->orderBy('consultation_date', 'asc')
+            ->first();
+
+        $pastAppointments = Consulta::where('consultation_date', '<', now())
+            ->when($user->type() == 'paciente', function ($query) use ($user) {
+                return $query->where('paciente_id', $user->paciente->id);
+            })
+            ->when($user->type() == 'medico', function ($query) use ($user) {
+                return $query->where('medico_id', $user->medico->id);
+            })
+            ->orderBy('consultation_date', 'desc')
+            ->take($limit)
+            ->get();
+
+        $formattedNextAppointment = $nextAppointment ? $this->formatAppointments(collect([$nextAppointment]))->first() : null;
+        $formattedPastAppointments = $this->formatAppointments($pastAppointments);
+
+        return response()->json([
+            'next_appointment' => $formattedNextAppointment,
+            'past_appointments' => $formattedPastAppointments,
+        ]);
+    }
+
+
+    private function formatAppointments($consultas)
+    {
+        $consultasCount = $consultas->groupBy(function ($consulta) {
+            return $consulta->paciente_id . '-' . $consulta->medico_id;
+        })->map(function ($group) {
+            return $group->count();
+        });
+
+        return $consultas->map(function ($consulta) use ($consultasCount) {
+            $key = $consulta->paciente_id . '-' . $consulta->medico_id;
+
+            return [
+                'consultation_date' => \Carbon\Carbon::parse($consulta->consultation_date)->format('d/m/Y'),
+                'consultation_time' => \Carbon\Carbon::parse($consulta->consultation_date)->format('H:i'),
+                'appointments_count' => $consultasCount[$key],
+                'doctor' => [
+                    'id' => $consulta->medico->id,
+                    'name' => $consulta->medico->user->name ?? null,
+                    'crm' => $consulta->medico->crm,
+                    'specialty' => [
+                        'id' => $consulta->medico->especialidade->id,
+                        'name' => $consulta->medico->especialidade->name,
+                    ],
+                ],
+                'patient' => [
+                    'id' => $consulta->paciente->id,
+                    'name' => $consulta->paciente->user->name ?? null,
+                ],
+            ];
+        });
     }
 
     public function create()
     {
-        // Caso seja necessário, retorne uma view para criação de consultas.
+
     }
 
     /**
