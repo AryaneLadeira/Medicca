@@ -11,8 +11,8 @@ interface AppointmentCardProps {
   nextAppointment?: boolean;
   userType: UserType;
   hasActions?: boolean;
-  onUpdateAppointments: () => void;
-  showToast: (
+  onUpdateAppointments?: () => void;
+  showToast?: (
     message: string,
     severity: 'success' | 'error' | 'info' | 'warning'
   ) => void;
@@ -86,7 +86,7 @@ function AppointmentCard({
           Você não tem consultas agendadas.
         </Typography>
       )}
-      {appointment ? (
+      {appointment && hasActions && onUpdateAppointments && showToast ? (
         <>
           <DeleteAppointmentDialog
             open={openDeleteModal}
