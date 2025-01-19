@@ -1,5 +1,12 @@
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
-import { Avatar, Card, CardContent, IconButton, Typography } from '@mui/material';
+import {
+  Avatar,
+  Card,
+  CardContent,
+  IconButton,
+  Link,
+  Typography,
+} from '@mui/material';
 import { useState } from 'react';
 import { DoctorData } from '../../../utils/types';
 import CreateAppointmentDialog from '../../molecules/CreateAppointmentDialog';
@@ -20,7 +27,9 @@ function DoctorCard({ doctor }: DoctorCardProps) {
       <Card className="doctor-card">
         <Avatar className="avatar" />
         <CardContent>
-          <Typography variant="h5">{doctor.name}</Typography>
+          <Link href={`/perfil/medico/${doctor.id}`}>
+            <Typography variant="h5">{doctor.name}</Typography>
+          </Link>
           <Typography>{doctor.specialty.name}</Typography>
           <Typography>CRM {doctor.crm}</Typography>
         </CardContent>

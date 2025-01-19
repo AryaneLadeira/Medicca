@@ -6,6 +6,7 @@ import Doctors from '../pages/Doctors';
 import Home from '../pages/Home';
 import Login from '../pages/Login';
 import NotFound from '../pages/NotFound';
+import Profile from '../pages/Profile';
 import Signup from '../pages/Signup';
 import ProtectedRoute from './ProtectedRoute';
 
@@ -23,6 +24,8 @@ const AppRoutes = () => {
             <Route path="/" element={<Home />} />
             <Route path="/agendamentos" element={<Appointments />} />
             <Route path="/medicos" element={<Doctors />} />
+            <Route path="/perfil/:id" element={<Profile />} />
+            <Route path="/perfil/medico/:id" element={<Profile />} />
           </Route>
         </Route>
 

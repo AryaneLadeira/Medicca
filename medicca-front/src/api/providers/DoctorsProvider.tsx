@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 import { DoctorsContext } from '../../context/DoctorsContext';
-import { DoctorSignup, DoctorSignupData, DoctorData } from '../../utils/types';
+import { DoctorSignup, DoctorSignupData, DoctorData, Doctor } from '../../utils/types';
 import { DoctorService } from '../services/DoctorService';
 
 interface DoctorsProviderProps {
@@ -22,8 +22,12 @@ export const DoctorsProvider = ({ children }: DoctorsProviderProps) => {
     }
   };
 
+  const getDoctorById = async (id: number): Promise<Doctor> => {
+    return await DoctorService.getDoctorById(id);
+  };
+
   return (
-    <DoctorsContext.Provider value={{ createNewDoctor, getDoctors }}>
+    <DoctorsContext.Provider value={{ createNewDoctor, getDoctors, getDoctorById }}>
       {children}
     </DoctorsContext.Provider>
   );

@@ -1,4 +1,4 @@
-import { AppBar, Box, Toolbar } from '@mui/material';
+import { AppBar, Box, Link, Toolbar } from '@mui/material';
 import { useAuthContext } from '../../../context/AuthContext';
 import Logo from '../../atoms/Logo';
 import ProfileAvatar from '../../atoms/ProfileAvatar';
@@ -12,10 +12,12 @@ function TopBar() {
         <Logo withText={true} />
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
           {user ? (
-            <ProfileAvatar
-              avatar={'https://www.w3schools.com/howto/img_avatar.png'}
-              name={user.name}
-            />
+            <Link href={`/perfil/${user.specificId}`}>
+              <ProfileAvatar
+                avatar={'https://www.w3schools.com/howto/img_avatar.png'}
+                name={user.name}
+              />
+            </Link>
           ) : (
             ''
           )}

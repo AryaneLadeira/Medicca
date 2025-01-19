@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 import { PatientsContext } from '../../context/PatientsContext';
-import { Patient, PatientData } from '../../utils/types';
+import { NewPatient, Patient, PatientData } from '../../utils/types';
 import { PatientService } from '../services/PatientService';
 
 interface PatientsProviderProps {
@@ -10,12 +10,16 @@ interface PatientsProviderProps {
 export const PatientsProvider = ({ children }: PatientsProviderProps) => {
   const createNewPatient = async (
     data: Patient
-  ): Promise<PatientData | void> => {
+  ): Promise<NewPatient | void> => {
     return await PatientService.createPatient(data);
   };
 
+  const getPatientById = async (id: number): Promise<PatientData> => {
+    return await PatientService.getPatientById(id);
+  };
+
   return (
-    <PatientsContext.Provider value={{ createNewPatient }}>
+    <PatientsContext.Provider value={{ createNewPatient, getPatientById }}>
       {children}
     </PatientsContext.Provider>
   );

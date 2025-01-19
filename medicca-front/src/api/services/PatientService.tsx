@@ -1,10 +1,10 @@
 import { cleanString } from '../../utils/format';
-import { Patient, PatientData } from '../../utils/types';
+import { NewPatient, Patient, PatientData } from '../../utils/types';
 
 const API_URL = import.meta.env.VITE_API_URL;
 
 export const PatientService = {
-  createPatient: async (data: Patient): Promise<PatientData> => {
+  createPatient: async (data: Patient): Promise<NewPatient> => {
     const currentDate = new Date().toISOString().split('T')[0];
 
     const payload = {
@@ -33,6 +33,15 @@ export const PatientService = {
       throw {
         message: errorData.message,
       };
+    }
+
+    const patientData = await response.json();
+    return patientData;
+  },
+  getPatientById: async (id: number): Promise<PatientData> => {
+    const response = await fetch(`${API_URL}/pacientes/${id}`);
+    if (!response.ok) {
+      throw new Error('Erro ao buscar paciente');
     }
 
     const patientData = await response.json();

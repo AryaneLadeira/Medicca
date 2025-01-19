@@ -29,10 +29,7 @@ export interface DoctorData {
   user_id: number;
   crm: string;
   name: string;
-  specialty: {
-    id: number;
-    name: string;
-  };
+  specialty: Speciality
 }
 
 export interface Patient {
@@ -47,7 +44,7 @@ export interface Patient {
   birth_date: string;
 }
 
-export interface PatientData {
+export interface NewPatient {
   name: string;
   cpf: string;
   cep: string;
@@ -58,6 +55,8 @@ export interface PatientData {
   registration_date: string;
   birth_date: string;
 }
+
+
 
 export interface CEPData {
   bairro: string;
@@ -138,4 +137,34 @@ export interface Appointment {
     id: number;
     name: string;
   };
+}
+
+export interface Phone {
+  id: number;
+  telefone: string;
+  user_id: number;
+}
+
+export interface PatientData {
+  id: number;
+  user_id: number;
+  registration_date: string;
+  name: string;
+  cpf: string;
+  cep: string;
+  email: string;
+  password: string;
+  address: string;
+  phone: string;
+  birth_date: string | null;
+  telefones: Phone[];
+}
+
+export interface Doctor {
+  id: number;
+  user_id: number;
+  crm: string;
+  name: string;
+  specialty: Speciality;
+  user: User;
 }
