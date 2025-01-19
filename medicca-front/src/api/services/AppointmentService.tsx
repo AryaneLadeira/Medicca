@@ -15,7 +15,6 @@ export const AppointmentService = {
       paciente_id: data.patient_id,
       medico_id: data.doctor_id,
       consultation_date: consultationDateTime,
-      appointment_date: new Date().toISOString().split('T')[0],
     };
 
     const response = await fetch(`${API_URL}/consultas`, {
@@ -78,7 +77,7 @@ export const AppointmentService = {
     const payload = {
       consultation_date: `${appointment.consultation_date} ${appointment.consultation_time}`,
     };
-  
+
     const response = await fetch(`${API_URL}/consultas/${appointment.id}`, {
       method: 'PUT',
       headers: {
@@ -86,11 +85,10 @@ export const AppointmentService = {
       },
       body: JSON.stringify(payload),
     });
-  
+
     if (!response.ok) {
       const errorData = await response.json();
       throw new Error(errorData.message || 'Erro ao atualizar consulta');
     }
   },
-  
 };

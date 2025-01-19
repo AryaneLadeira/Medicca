@@ -67,7 +67,6 @@ function Appointments() {
         })
         .catch((error) => {
           setError(`Erro ao carregar os agendamentos: ${error}`);
-          console.error('Erro ao carregar agendamentos:', error);
         })
         .finally(() => {
           setLoading(false);

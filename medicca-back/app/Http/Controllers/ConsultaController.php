@@ -116,13 +116,25 @@ class ConsultaController extends Controller
             'paciente_id' => 'required|exists:pacientes,id',
             'medico_id' => 'required|exists:medicos,id',
             'consultation_date' => 'required|date_format:Y-m-d H:i',
-            'appointment_date' => 'required|date',
         ]);
 
+        $appointmentDate = \Carbon\Carbon::now()->format('Y-m-d H:i');
 
-        $consulta = Consulta::create($validated);
-        return response()->json($consulta, 201);
+        // Criando a consulta com os dados validados
+        $consulta = Consulta::create([
+            'paciente_id' => $validated['paciente_id'],
+            'medico_id' => $validated['medico_id'],
+            'consultation_date' => $validated['consultation_date'],
+            'appointment_date' => $appointmentDate,
+        ]);
+
+        return response()->json([
+            'message' => 'Consulta criada com sucesso!',
+            'consulta' => $consulta,
+        ], 201);
     }
+
+
 
     /**
      * Display the specified resource.
