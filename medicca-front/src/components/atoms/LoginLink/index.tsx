@@ -1,17 +1,17 @@
 import { Box, Link, Typography } from '@mui/material';
 import './style.scss';
 
-function SignupLink() {
+function LoginLink() {
   return (
     <Box>
       <Typography variant="body1">
-        Não tem uma conta?ﾠ
-        <Link href="/registrar-conta" variant="body2">
-          Crie uma agora
+        Já tem uma conta?ﾠ
+        <Link href="/login" variant="body2">
+          Entre agora
         </Link>
       </Typography>
     </Box>
   );
 }
 
-export default SignupLink;
+export default LoginLink;
