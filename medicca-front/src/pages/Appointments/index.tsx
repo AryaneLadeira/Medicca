@@ -1,29 +1,17 @@
 import { Box, Typography } from '@mui/material';
 import dayjs, { Dayjs } from 'dayjs';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { AppointmentService } from '../../api/services/AppointmentService';
 import AppointmentCard from '../../components/atoms/AppointmentCard';
 import AppointmentFilters from '../../components/molecules/AppointmentsFilters';
+import LoadingScreen from '../../components/organisms/LoadingScreen';
+import { useAuthContext } from '../../context/AuthContext';
+import { Appointment, UserType } from '../../utils/types';
 import './style.scss';
 
 function Appointments() {
-  const appointments = [
-    {
-      date: '2025-01-20',
-      time: '14:00',
-      doctor: 'Dra. Maria Clara',
-      specialty: 'Cardiologia',
-      patient: 'John Doe',
-      countAppointments: 1,
-    },
-    {
-      date: '2024-12-15',
-      time: '16:00',
-      doctor: 'Dr. Roberto Silva',
-      specialty: 'Endocrinologia',
-      patient: 'Richard Tomas',
-      countAppointments: 3,
-    },
-  ];
+  const [appointments, setAppointments] = useState<Appointment[]>([]);
+  const { user } = useAuthContext();
 
   const [filters, setFilters] = useState({
     dateRange: [null, null] as [Dayjs | null, Dayjs | null],
@@ -31,14 +19,34 @@ function Appointments() {
     specialty: '',
   });
 
-  const userType = 'patient';
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string>('');
+
+  useEffect(() => {
+    if (user) {
+      setLoading(true);
+      AppointmentService.getAppointments(user.id)
+        .then((appointmentsData) => {
+          setAppointments(appointmentsData);
+        })
+        .catch((error) => {
+          setError(`Erro ao carregar os agendamentos: ${error}`);
+          console.error('Erro ao carregar agendamentos:', error);
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+    }
+  }, [user]);
 
   const filteredAppointments = appointments.filter((appointment) => {
     const { dateRange, name, specialty } = filters;
     const patientOrDoctorName =
-      userType === 'doctor' ? appointment.patient : appointment.doctor;
+      user?.type === UserType.Doctor
+        ? appointment.patient.name
+        : appointment.doctor.name;
 
-    const appointmentDate = dayjs(appointment.date);
+    const appointmentDate = dayjs(appointment.consultation_date);
 
     const startDate = dateRange[0]?.startOf('day');
     const endDate = dateRange[1]?.endOf('day');
@@ -54,7 +62,9 @@ function Appointments() {
         ? patientOrDoctorName.toLowerCase().includes(name.toLowerCase())
         : true) &&
       (specialty
-        ? appointment.specialty.toLowerCase().includes(specialty.toLowerCase())
+        ? appointment.doctor.specialty.name
+            .toLowerCase()
+            .includes(specialty.toLowerCase())
         : true)
     );
   });
@@ -71,6 +81,10 @@ function Appointments() {
     });
   };
 
+  if (loading || !user) {
+    return <LoadingScreen />;
+  }
+
   return (
     <Box className="appointments">
       <Typography variant="h3" className="subtitle">
@@ -78,7 +92,7 @@ function Appointments() {
       </Typography>
 
       <AppointmentFilters
-        userType={userType}
+        userType={user.type}
         filters={filters}
         onFilterChange={handleFilterChange}
         onClearFilters={handleClearFilters}
@@ -90,13 +104,13 @@ function Appointments() {
             <AppointmentCard
               key={index}
               appointment={appointment}
-              userType={userType}
-              hasActions={userType == 'patient'}
+              userType={user.type}
+              hasActions={user.type == UserType.Patient}
             />
           ))
         ) : (
           <Typography className="empty">
-            Não há agendamentos para mostrar.
+            {error ? error : 'Não há agendamentos para mostrar.'}
           </Typography>
         )}
       </Box>
