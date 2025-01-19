@@ -65,9 +65,27 @@ class PacienteController extends Controller
 
     public function show(string $id)
     {
-        $paciente = Paciente::with('user')->findOrFail($id);
+        $paciente = Paciente::with('user', 'telefones')->findOrFail($id);
 
-        return response()->json($paciente);
+        return response()->json([
+            'id' => $paciente->id,
+            'user_id' => $paciente->user_id,
+            'registration_date' => $paciente->registration_date,
+            'name' => $paciente->user->name,
+            'cpf' => $paciente->user->cpf,
+            'cep' => $paciente->user->cep,
+            'email' => $paciente->user->email,
+            'address' => $paciente->user->address,
+            'phone' => $paciente->user->phone,
+            'birth_date' => $paciente->birth_date,
+            'telefones' => $paciente->telefones->map(function ($telefone) {
+                return [
+                    'id' => $telefone->id,
+                    'telefone' => $telefone->telefone,
+                    'user_id' => $telefone->user_id,
+                ];
+            }),
+        ]);
     }
 
     /**
@@ -98,7 +116,7 @@ class PacienteController extends Controller
     public function destroy(string $id)
     {
         $paciente = Paciente::findOrFail($id);
-        $paciente->user->delete(); // Excluir o usuário também
+        $paciente->user->delete();
         $paciente->delete();
 
         return response()->json(['message' => 'Paciente deletado com sucesso']);

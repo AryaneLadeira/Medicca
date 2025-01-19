@@ -87,10 +87,32 @@ class MedicoController extends Controller
 
     public function show(string $id)
     {
-        $medico = Medico::with('user')->findOrFail($id);
+        $medico = Medico::with('user', 'especialidade')
+            ->where('medicos.id', $id)
+            ->firstOrFail();
 
-        return response()->json($medico);
+        return response()->json([
+            'id' => $medico->id,
+            'user_id' => $medico->user_id,
+            'crm' => $medico->crm,
+            'name' => $medico->user->name,
+            'specialty' => [
+                'id' => $medico->especialidade->id,
+                'name' => $medico->especialidade->name,
+            ],
+            'user' => [
+                'id' => $medico->user->id,
+                'name' => $medico->user->name,
+                'email' => $medico->user->email,
+                'type' => $medico->user->type,
+                'specificId' => $medico->user->specificId,
+                'birthDate' => $medico->user->birthDate,
+            ]
+        ]);
     }
+
+
+
 
     public function update(Request $request, string $id)
     {
