@@ -287,4 +287,42 @@ class ConsultaController extends Controller
         }
     }
 
+    public function appointmentsSummary(Request $request)
+    {
+        $userId = $request->query('user_id');
+        $limit = $request->query('limit', 10);
+        $user = User::findOrFail($userId);
+
+        $nextAppointment = Consulta::where('consultation_date', '>=', now())
+            ->when($user->type() == 'paciente', function ($query) use ($user) {
+                return $query->where('paciente_id', $user->paciente->id);
+            })
+            ->when($user->type() == 'medico', function ($query) use ($user) {
+                return $query->where('medico_id', $user->medico->id);
+            })
+            ->orderBy('consultation_date', 'asc')
+            ->first();
+
+        $pastAppointments = Consulta::where('consultation_date', '<', now())
+            ->when($user->type() == 'paciente', function ($query) use ($user) {
+                return $query->where('paciente_id', $user->paciente->id);
+            })
+            ->when($user->type() == 'medico', function ($query) use ($user) {
+                return $query->where('medico_id', $user->medico->id);
+            })
+            ->orderBy('consultation_date', 'desc')
+            ->take($limit)
+            ->get();
+
+        $formattedNextAppointment = $nextAppointment ? $this->formatAppointments(collect([$nextAppointment]))->first() : null;
+        $formattedPastAppointments = $this->formatAppointments($pastAppointments);
+
+        return response()->json([
+            'next_appointment' => $formattedNextAppointment,
+            'past_appointments' => $formattedPastAppointments,
+        ]);
+    }
+
+
+
 }
