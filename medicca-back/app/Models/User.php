@@ -83,10 +83,13 @@ class User extends Authenticatable implements JWTSubject
         $type = $this->type();
 
         $specificId = null;
+        $birthDate = null;
+
         if ($type === 'medico' && $this->medico) {
             $specificId = $this->medico->id;
         } elseif ($type === 'paciente' && $this->paciente) {
             $specificId = $this->paciente->id;
+            $birthDate = $this->paciente->birth_date;
         }
 
         return [
@@ -95,7 +98,9 @@ class User extends Authenticatable implements JWTSubject
             'email' => $this->email,
             'type' => $type,
             'specificId' => $specificId,
+            'birthDate' => $birthDate,
         ];
     }
+
 
 }
