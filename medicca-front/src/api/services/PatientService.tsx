@@ -5,7 +5,7 @@ const API_URL = 'http://127.0.0.1:8000/api';
 
 export const PatientService = {
   createPatient: async (data: Patient): Promise<PatientData> => {
-    const currentDate = new Date().toISOString().split('T')[0]; // Data no formato YYYY-MM-DD
+    const currentDate = new Date().toISOString().split('T')[0];
 
     const payload = {
       name: data.name,
@@ -16,6 +16,7 @@ export const PatientService = {
       address: `${data.address} ${data.number}`,
       phone: data.phone,
       registration_date: currentDate,
+      birth_date: data.birth_date,
     };
 
     const response = await fetch(`${API_URL}/pacientes`, {

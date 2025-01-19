@@ -6,6 +6,7 @@ import ClearFiltersButton from '../ClearFiltersButton';
 import CrmFilter from '../CrmFilter';
 import NameFilter from '../NameFilter';
 import SpecialtySelectFilter from '../SpecialtyFilter';
+import { isUnder18 } from '../../../utils/functions';
 
 interface DoctorFiltersProps {
   doctors: DoctorData[];
@@ -57,6 +58,8 @@ function DoctorFilters({ doctors, setFilteredDoctors }: DoctorFiltersProps) {
 
   const hasFiltersApplied = () => name !== '' || specialty !== '' || crm !== '';
 
+  const isUserUnder18 = user ? isUnder18(user) : false;
+
   return (
     <Box
       className="filters-container"
@@ -75,10 +78,13 @@ function DoctorFilters({ doctors, setFilteredDoctors }: DoctorFiltersProps) {
         ''
       )}
 
-      <SpecialtySelectFilter
-        value={specialty}
-        onChange={(value) => handleFilterChange('specialty', value)}
-      />
+      {!isUserUnder18 && (
+        <SpecialtySelectFilter
+          value={specialty}
+          onChange={(value) => handleFilterChange('specialty', value)}
+        />
+      )}
+
       <CrmFilter
         value={crm}
         onChange={(e) => handleFilterChange('crm', e.target.value)}
