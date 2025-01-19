@@ -11,6 +11,11 @@ interface AppointmentCardProps {
   nextAppointment?: boolean;
   userType: UserType;
   hasActions?: boolean;
+  onUpdateAppointments: () => void;
+  showToast: (
+    message: string,
+    severity: 'success' | 'error' | 'info' | 'warning'
+  ) => void;
 }
 
 function AppointmentCard({
@@ -18,6 +23,8 @@ function AppointmentCard({
   nextAppointment,
   userType,
   hasActions,
+  onUpdateAppointments,
+  showToast,
 }: AppointmentCardProps) {
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
   const [openEditModal, setOpenEditModal] = useState(false);
@@ -26,11 +33,6 @@ function AppointmentCard({
   };
 
   const handleDeleteClose = () => {
-    setOpenDeleteModal(false);
-  };
-
-  const handleDeleteConfirm = () => {
-    console.log('Agendamento desmarcado');
     setOpenDeleteModal(false);
   };
 
@@ -89,19 +91,26 @@ function AppointmentCard({
           Você não tem consultas agendadas.
         </Typography>
       )}
+      {appointment ? (
+        <>
+          <DeleteAppointmentDialog
+            open={openDeleteModal}
+            onClose={handleDeleteClose}
+            appointmentId={appointment.id}
+            onUpdateAppointments={onUpdateAppointments}
+            showToast={showToast}
+          />
 
-      <DeleteAppointmentDialog
-        open={openDeleteModal}
-        onClose={handleDeleteClose}
-        onConfirm={handleDeleteConfirm}
-      />
-
-      <EditAppointmentDialog
-        open={openEditModal}
-        onClose={handleEditClose}
-        appointment={appointment}
-        onEditConfirm={handleEditConfirm}
-      />
+          <EditAppointmentDialog
+            open={openEditModal}
+            onClose={handleEditClose}
+            appointment={appointment}
+            onEditConfirm={handleEditConfirm}
+          />
+        </>
+      ) : (
+        ''
+      )}
     </Card>
   );
 }

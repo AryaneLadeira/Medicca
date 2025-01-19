@@ -32,12 +32,17 @@ export const AppointmentsProvider = ({
     return await AppointmentService.getAppointmentsSummary(userId);
   };
 
+  const deleteAppointment = async (appointmentId: number): Promise<void> => {
+    return await AppointmentService.deleteAppointment(appointmentId);
+  };
+
   return (
     <AppointmentsContext.Provider
       value={{
         createAppointment,
         getAppointments,
         getAppointmentsSummary,
+        deleteAppointment,
       }}
     >
       {children}

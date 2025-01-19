@@ -81,6 +81,7 @@ class ConsultaController extends Controller
             $key = $consulta->paciente_id . '-' . $consulta->medico_id;
 
             return [
+                'id' => $consulta->id,
                 'consultation_date' => \Carbon\Carbon::parse($consulta->consultation_date)->format('d/m/Y'),
                 'consultation_time' => \Carbon\Carbon::parse($consulta->consultation_date)->format('H:i'),
                 'appointments_count' => $consultasCount[$key],

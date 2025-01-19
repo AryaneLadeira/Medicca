@@ -118,6 +118,7 @@ export interface DecodedToken extends User {
 }
 
 export interface Appointment {
+  id: number;
   consultation_date: string;
   consultation_time: string;
   appointments_count: number;

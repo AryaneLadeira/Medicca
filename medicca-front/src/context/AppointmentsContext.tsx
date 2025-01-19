@@ -13,6 +13,7 @@ interface AppointmentsContextProps {
     nextAppointment: Appointment;
     pastAppointments: Appointment[];
   }>;
+  deleteAppointment: (appointmentId: number) => Promise<void>;
 }
 
 export const AppointmentsContext = createContext<

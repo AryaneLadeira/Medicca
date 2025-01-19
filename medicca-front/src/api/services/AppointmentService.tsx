@@ -63,4 +63,15 @@ export const AppointmentService = {
       pastAppointments: data.past_appointments,
     };
   },
+
+  deleteAppointment: async (appointmentId: number): Promise<void> => {
+    const response = await fetch(`${API_URL}/consultas/${appointmentId}`, {
+      method: 'DELETE',
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || 'Erro ao excluir consulta');
+    }
+  },
 };

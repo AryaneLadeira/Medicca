@@ -3,6 +3,7 @@ import dayjs, { Dayjs } from 'dayjs';
 import { useEffect, useState } from 'react';
 import { AppointmentService } from '../../api/services/AppointmentService';
 import AppointmentCard from '../../components/atoms/AppointmentCard';
+import Toast from '../../components/atoms/Toast';
 import AppointmentFilters from '../../components/molecules/AppointmentsFilters';
 import LoadingScreen from '../../components/organisms/LoadingScreen';
 import { useAuthContext } from '../../context/AuthContext';
@@ -23,6 +24,23 @@ function Appointments() {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string>('');
 
+  const [toast, setToast] = useState({
+    open: false,
+    message: '',
+    severity: 'success' as 'success' | 'error' | 'info' | 'warning',
+  });
+
+  const showToast = (
+    message: string,
+    severity: 'success' | 'error' | 'info' | 'warning'
+  ) => {
+    setToast({ open: true, message, severity });
+  };
+
+  const closeToast = () => {
+    setToast({ ...toast, open: false });
+  };
+
   useEffect(() => {
     if (user) {
       setLoading(true);
@@ -39,6 +57,23 @@ function Appointments() {
         });
     }
   }, [user]);
+
+  const updateAppointments = () => {
+    if (user) {
+      setLoading(true);
+      AppointmentService.getAppointments(user.id)
+        .then((appointmentsData) => {
+          setAppointments(appointmentsData);
+        })
+        .catch((error) => {
+          setError(`Erro ao carregar os agendamentos: ${error}`);
+          console.error('Erro ao carregar agendamentos:', error);
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+    }
+  };
 
   const filteredAppointments = appointments.filter((appointment) => {
     const { dateRange, name, specialty } = filters;
@@ -107,7 +142,9 @@ function Appointments() {
               key={index}
               appointment={appointment}
               userType={user.type}
-              hasActions={user.type == UserType.Patient}
+              hasActions={user.type === UserType.Patient}
+              onUpdateAppointments={updateAppointments}
+              showToast={showToast}
             />
           ))
         ) : (
@@ -116,6 +153,12 @@ function Appointments() {
           </Typography>
         )}
       </Box>
+      <Toast
+        open={toast.open}
+        message={toast.message}
+        severity={toast.severity}
+        onClose={closeToast}
+      />
     </Box>
   );
 }
